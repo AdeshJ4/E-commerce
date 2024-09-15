@@ -20,12 +20,15 @@ import UnAuth from './pages/unauth-page';
 
 const App = () => {
 
-  const isAuthenticated = true;
-  const user = {name: 'Adesh', role: 'user'};
+  const isAuthenticated = false;
+  const user = { name: 'Adesh', role: 'admin' };
+
+
   return (
     <div className='flex flex-col overflow-hidden bg-white'>
       <Routes>
-        {/* Protecte the routes based on role */}
+        {/* Protected the routes based on role */}
+
         {/* Auth related routes */}
         <Route path='/auth' element={
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>

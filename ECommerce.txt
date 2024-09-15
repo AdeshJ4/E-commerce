@@ -1,0 +1,13 @@
+MERN Stack Full Course - ECommerce App with Admin Panel : React, Redux Toolkit, Tailwind, MongoDB
+https://www.youtube.com/watch?v=_4CPp670fK4
+
+
+
+server: npm run dev
+
+
+follow this page for vite + tailwind :  https://ui.shadcn.com/docs/installation/vite
+
+
+run this command to install components from shadcn.
+npx shadcn@latest add input
