@@ -5,7 +5,6 @@ function CheckAuth({ isAuthenticated, user, children }) {
   const location = useLocation();
 
 
-  console.log(isAuthenticated, user, children, location);
   
 
   // is user is not Authenticated and he is trying to access any other page rather than login and register then : 

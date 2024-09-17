@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import AuthLayout from './components/auth/layout';
 import AuthLogin from './pages/auth/login';
@@ -16,17 +16,25 @@ import ShoppingCheckout from './pages/shopping/Checkout';
 import ShoppingAccount from './pages/shopping/Account';
 import CheckAuth from './components/common/check-auth';
 import UnAuth from './pages/unauth-page';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkAuth } from './store/slices/auth-slice';
 
 
 const App = () => {
+  const { isAuthenticated, user  } = useSelector(state => state.auth);
 
-  const isAuthenticated = false;
-  const user = { name: 'Adesh', role: 'admin' };
+
+  const dispatch = useDispatch();
+
+  useEffect(()=> {
+    dispatch(checkAuth())
+  }, [dispatch])
 
 
   return (
     <div className='flex flex-col overflow-hidden bg-white'>
       <Routes>
+        <Route path='/' element={<h1>Home</h1>} />
         {/* Protected the routes based on role */}
 
         {/* Auth related routes */}

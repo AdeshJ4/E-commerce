@@ -25,6 +25,7 @@ export const registerFormControl = [
 
 
 export const loginFormControl = [
+
     {
         name: 'email',
         label: 'Email',

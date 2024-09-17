@@ -11,3 +11,25 @@ follow this page for vite + tailwind :  https://ui.shadcn.com/docs/installation/
 
 run this command to install components from shadcn.
 npx shadcn@latest add input
+
+
+
+
+
+CCM : 
+we have something called CCM.
+we have a super admin, he has a access to add multiple admins somrthing like that.
+so we have CCM admin panel and their we need to manually configure that admin related informations.
+search on google about CCm tools
+very large companies used these CCM tools.
+
+
+Shooping View 
+then you can have multiple admins 
+then you have super admin.
+
+super admin can access/control multiple admins
+and admin can control users.
+
+
+but in our application we have only one admin
