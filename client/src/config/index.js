@@ -25,6 +25,7 @@ export const registerFormControl = [
 
 
 export const loginFormControl = [
+
     {
         name: 'email',
         label: 'Email',
@@ -39,4 +40,66 @@ export const loginFormControl = [
         componentType: 'input',
         type: 'password'
     }
+]
+
+export const addProductsFormElements = [
+    {
+        label: 'Title',
+        name: 'title',
+        componentType: 'input',
+        type: 'text',
+        placeholder: 'Enter product title'
+    },
+    {
+        label: 'Description',
+        name: 'description',
+        componentType: 'textarea',
+        type: 'text',
+        placeholder: 'Enter product description'
+    },
+    {
+        label: 'Category',
+        name: 'category',
+        componentType: 'select',
+        options: [
+            { id: "men", label: 'Men' },
+            { id: "women", label: 'Women' },
+            { id: "kids", label: 'Kids' },
+            { id: "accessories", label: 'Accessories' },
+            { id: "footware", label: 'Footware' },
+        ]
+    },
+    {
+        label: 'Brand',
+        name: 'brand',
+        componentType: 'select',
+        options: [
+            { id: "nike", label: 'Nike' },
+            { id: "adidas", label: 'Adidas' },
+            { id: "puma", label: 'Puma' },
+            { id: "levi", label: 'Levi' },
+            { id: "zara", label: 'Zara' },
+        ]
+    },
+    {
+        label: 'Price',
+        name: 'price',
+        componentType: 'input',
+        type: 'number',
+        placeholder: 'Enter product price'
+    },
+    {
+        label: 'Sale Price',
+        name: 'salePrice',
+        componentType: 'input',
+        type: 'number',
+        placeholder: 'Enter sale price (optional)'
+    },
+    {
+        label: 'Total Stocks',
+        name: 'totalStock',
+        componentType: 'input',
+        type: 'number',
+        placeholder: 'Enter total stock'
+    },
 ]
