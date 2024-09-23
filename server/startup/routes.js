@@ -1,4 +1,5 @@
 const authRouter = require('../routes/auth/auth-routes');
+const productRouter = require('../routes/admin/products-routes');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -25,4 +26,5 @@ module.exports = function (express, app) {
 
 
     app.use("/api/auth", authRouter);
+    app.use("/api/admin/products", productRouter);
 }
