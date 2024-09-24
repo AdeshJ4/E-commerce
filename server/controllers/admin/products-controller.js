@@ -16,11 +16,7 @@ const handleImageUpload = async (req, res) => {
 
 const addProduct = async (req, res) => {
   try {
-    console.log('req.body', req.body);
-    
     const product = await Product.create(req.body);
-    console.log('product from backend ', product);
-    
     return handleResponse({
       res,
       status: 201,
@@ -98,9 +94,7 @@ const fetchAllProducts = async (req, res) => {
 const editProduct = async (req, res) => {
   try {
     const { id } = req.params;
-
-    const product = await Product.findByIdAndUp(id, req.body, { new: true });
-
+    const product = await Product.findByIdAndUpdate(id, req.body, { new: true });
     // if product is not found
     if (!product)
       return handleResponse({
@@ -119,7 +113,6 @@ const editProduct = async (req, res) => {
       message: "Product edited successfully",
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       success: false,
       message: "Error Occured",
@@ -186,6 +179,7 @@ const deleteProduct = async (req, res) => {
     return handleResponse({
       res,
       status: 200,
+      data: product,
       message: "Product deleted successfully",
       success: true,
     });

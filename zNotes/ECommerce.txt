@@ -33,3 +33,16 @@ and admin can control users.
 
 
 but in our application we have only one admin
+
+
+
+
+
+
+
+withCredentials: true: 
+
+-> withCredentials() makes your browser include cookies and authentication headers in your XHR request. If your service depends on any cookie (including session cookies), it will only work with this option set.
+-> Credentials are cookies, authorization headers or TLS client certificates
+
+
