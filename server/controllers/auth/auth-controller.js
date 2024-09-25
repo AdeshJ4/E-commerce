@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
+const handleResponse = require('../../utils/handleResponse');
 require('dotenv').config();
 
 //registerUser
@@ -37,7 +38,8 @@ const loginUser = async (req, res) => {
                 user: {
                     email: userAvailable.email,
                     role: userAvailable.role,
-                    id: userAvailable._id
+                    id: userAvailable._id,
+                    userName: userAvailable.userName
                 }
             })
         }else{
@@ -59,27 +61,11 @@ const logoutUser = (req, res)=> {
     })
 }
 
-
-//auth middleware
-const authMiddleware = async (req, res, next) =>  {
-    const token = req.cookies.token;
-    if(!token) return res.status(401).json({
-        success: false,
-        message: 'Unauthorized user'
-    })
-
-    try {
-        const decoded  = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
-        req.user = decoded;
-        next();
-    } catch (error) {
-        return res.status(401).json({
-            success: false,
-            message: 'Unauthorized user'
-        })
-    }
+// check Auth
+const checkAuth = (req, res) => {
+    const user = req.user;
+    return handleResponse({res, status: 200, success: true, message: 'Authenticated user!', data: user})
 }
 
 
-
-module.exports = {registerUser, loginUser, logoutUser, authMiddleware }
+module.exports = {registerUser, loginUser, logoutUser, checkAuth }

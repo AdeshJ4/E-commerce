@@ -22,8 +22,6 @@ export const registerFormControl = [
     }
 ]
 
-
-
 export const loginFormControl = [
 
     {
@@ -66,7 +64,7 @@ export const addProductsFormElements = [
             { id: "women", label: 'Women' },
             { id: "kids", label: 'Kids' },
             { id: "accessories", label: 'Accessories' },
-            { id: "footware", label: 'Footware' },
+            { id: "footwear", label: 'Footwear' },
         ]
     },
     {
@@ -101,5 +99,40 @@ export const addProductsFormElements = [
         componentType: 'input',
         type: 'number',
         placeholder: 'Enter total stock'
+    },
+]
+
+
+
+export const shoppingViewHeaderMenuItems = [
+    {
+        id: 'home',
+        label: 'Home',
+        path: '/shop/home'
+    },
+    {
+        id: 'men',
+        label: 'Men',
+        path: '/shop/listing'
+    },
+    {
+        id: 'women',
+        label: 'Women',
+        path: '/shop/listing'
+    },
+    {
+        id: 'kids',
+        label: 'Kids',
+        path: '/shop/listing'
+    },
+    {
+        id: 'accessories',
+        label: 'Accessories',
+        path: '/shop/listing'
+    },
+    {
+        id: 'footwear',
+        label: 'Footwear',
+        path: '/shop/listing'
     },
 ]
