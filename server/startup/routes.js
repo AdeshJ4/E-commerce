@@ -1,12 +1,12 @@
-const authRouter = require('../routes/auth/auth-routes');
-const productRouter = require('../routes/admin/products-routes');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const morgan = require('morgan');
+const authRouter = require('../routes/auth/auth-routes');
+const adminProductRouter = require('../routes/admin/products-routes');
+const shopProductRouter = require('../routes/shop/products-routes');
 
 
 module.exports = function (express, app) {
-
     app.use(cors({
         origin: 'http://localhost:5173',
         methods: ['GET', 'POST', 'DELETE', 'PUT'],
@@ -26,5 +26,6 @@ module.exports = function (express, app) {
 
 
     app.use("/api/auth", authRouter);
-    app.use("/api/admin/products", productRouter);
+    app.use("/api/admin/products", adminProductRouter);
+    app.use("/api/shop/products", shopProductRouter);
 }

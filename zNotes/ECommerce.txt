@@ -46,3 +46,29 @@ withCredentials: true:
 -> Credentials are cookies, authorization headers or TLS client certificates
 
 
+
+
+
+
+
+The difference between sort and filter lies in their purpose and operation when working with data:
+
+Sort:
+
+Purpose: To arrange data in a specific order, either ascending or descending.
+Operation: Sort reorganizes the entire dataset based on one or more criteria. For example, sorting a list of names alphabetically or sorting a list of numbers from smallest to largest.
+Example: Sorting a list of products by price, from low to high.
+
+
+Filter:
+
+Purpose: To reduce the dataset by showing only data that meets certain criteria.
+Operation: Filter excludes data that doesn't match the specified condition(s). For example, you could filter a list to show only products that cost more than $50.
+Example: Filtering a list of products to show only those available in stock.
+In summary, sort rearranges data, while filter narrows down the data displayed.
+
+
+
+
+
+
