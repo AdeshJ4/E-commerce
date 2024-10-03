@@ -17,8 +17,6 @@ const ProductImageUpload = ({
 }) => {
   const inputRef = useRef(null);
 
-  console.log('isEditMode', isEditMode);
-
 
   const handleImageFileChange = (event) => {
     const selectedFile = event.target.files?.[0];

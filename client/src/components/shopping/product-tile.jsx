@@ -5,10 +5,13 @@ import { Button } from '../ui/button'
 import { DollarSign } from 'lucide-react'
 import { brandOptionsMap, categoryOptionsMap } from '@/config'
 
-const ShoppingProductTile = ({ product }) => {
+const ShoppingProductTile = ({ product, handleGetProductDetails }) => {
+  const handleProductDetails = () => {
+    handleGetProductDetails(product?._id);
+  }
     return (
       <Card className="w-full max-w-sm mx-auto">
-        <div>
+        <div onClick={handleProductDetails}>
           <div className="relative">
             <img
               src={product?.image}

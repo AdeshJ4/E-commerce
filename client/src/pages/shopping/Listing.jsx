@@ -5,39 +5,59 @@ import { Button } from '@/components/ui/button';
 import { ArrowUpDownIcon } from 'lucide-react';
 import { sortOptions } from '@/config';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllProducts } from '@/store/slices/shop-slice/product-slice';
+import { fetchAllProducts, fetchProductDetails } from '@/store/slices/shop-slice/product-slice';
 import ShoppingProductTile from '@/components/shopping/product-tile';
+import { useSearchParams } from 'react-router-dom';
+import createSearchParamsHelper from '@/helpers/searchParamsHelper';
+import ProductDetailsDialog from '@/components/shopping/product-details';
 
 
 const ShoppingListing = () => {
 
   const dispatch = useDispatch();
-  const { isLoading, productList } = useSelector(state => state.shopProducts);
-  const [filters, setFilters] = useState({});
+  const { isLoading, productList, productDetails } = useSelector(state => state.shopProducts);
+  const [filters, setFilters] = useState({});   // { "category": ["men", "women", "accessories"], "brand": ["nike", "adidas"] }
   const [sort, setSort] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+
 
   useEffect(() => {
-    dispatch(fetchAllProducts());
-  }, [dispatch]);
+    if (filters !== null && sort !== null) dispatch(fetchAllProducts({ filterParams: filters, sortParams: sort }));
+  }, [dispatch, sort, filters]);
 
   useEffect(()=>{
     setSort('price-lowtohigh'); 
     setFilters(JSON.parse(sessionStorage.getItem('filters')) || {})
   }, [])
 
-  console.log(filters, 'filters');
+  useEffect(() => {
+    if (filters && Object.keys(filters).length > 0) {
+      const createQueryString = createSearchParamsHelper(filters);
+      setSearchParams(new URLSearchParams(createQueryString))
+    }
+  }, [filters]);
+
+  useEffect(() => {
+    if (productDetails !== null) {
+      setOpenDetailsDialog(true);
+    }
+  }, [productDetails])
   
 
   const handleSort = (value) => {
     setSort(value)
   }
 
-  function handleFilter (getSelectedSection, getSelectedSectionOption) {
-    //getSectionId = getSelectedSection   &&    getCurrentOptions = getSelectedSectionOption
-    // console.log(getSelectedSection, getSelectedSectionOption);
-    let cpyFilters = {...filters};
+  console.log('productDetails', productDetails);
+
+
+
+  function handleFilter(getSelectedSection, getSelectedSectionOption) { // category , men
+    let cpyFilters = { ...filters };   // cpyFilters = { category: ["men"], brand: [] }
+
     // checking category or brand present or not
-    const indexOfCurrentSection = Object.keys(cpyFilters).indexOf(getSelectedSection);
+    const indexOfCurrentSection = Object.keys(cpyFilters).indexOf(getSelectedSection);  // ['category', 'brand'].indexOf(category)  ==> 0
 
     if(indexOfCurrentSection == -1){
       cpyFilters = {
@@ -45,13 +65,11 @@ const ShoppingListing = () => {
         [getSelectedSection]: [getSelectedSectionOption]
       }
     } else {
-      const indexOfCurrentOption = cpyFilters[getSelectedSection].indexOf(
-        getSelectedSectionOption
-      );
+      const indexOfCurrentOption = cpyFilters[getSelectedSection].indexOf(getSelectedSectionOption);  // ["men"].indexOf(men)  == 0
       if (indexOfCurrentOption === -1) {
-        cpyFilters[getSelectedSection].push(getSelectedSectionOption);
+        cpyFilters[getSelectedSection].push(getSelectedSectionOption);  // if you don't got that element that menas we want to add it 
       } else {
-        cpyFilters[getSelectedSection].splice(indexOfCurrentOption, 1);
+        cpyFilters[getSelectedSection].splice(indexOfCurrentOption, 1);  // if you got that element that menas we want to delete/unchecked  that element.
       }
     }
 
@@ -59,8 +77,12 @@ const ShoppingListing = () => {
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters))
   }
 
+  const handleGetProductDetails = (getCurrentProductId) => {
+    dispatch(fetchProductDetails(getCurrentProductId))
+  }
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
+    <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
       <ProductFilter filters={filters} handleFilter={handleFilter} />
       <div className="bg-background w-full rounded-lg shadow-sm">
         <div className="p-4 border-b flex items-center justify-between">
@@ -96,11 +118,14 @@ const ShoppingListing = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
           {productList && productList.length > 0
             ? productList.map((product, i) => (
-                <ShoppingProductTile product={product} key={i}/>
+              <ShoppingProductTile product={product} handleGetProductDetails={handleGetProductDetails} key={i} />
               ))
             : null}
         </div>
       </div>
+      {
+        productDetails !== null ? <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} product={productDetails} /> : ''
+      }      
     </div>
   );
 }
