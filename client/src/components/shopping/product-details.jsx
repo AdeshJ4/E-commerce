@@ -5,11 +5,12 @@ import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { StarIcon } from 'lucide-react';
+import { Input } from '../ui/input';
 
 const ProductDetailsDialog = ({ product, open, setOpen }) => {
 
   console.log('ProductDetailsDialog', product);
-
+  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {/* <DialogContent className='grid grid-cols-2 gap-8 sm:p-5 max-w-[80vw] sm:max-w-[70vw] lg:max-w-[60vw]'> */}
@@ -20,13 +21,13 @@ const ProductDetailsDialog = ({ product, open, setOpen }) => {
         <div className=''>
           <div>
             <DialogTitle>
-              <h1 className='text-3xl sm:text-4xl lg:text-5xl font-extrabold'>{product?.title}</h1>
+               <h1 className='text-3xl sm:text-4xl lg:text-5xl font-extrabold'>{product?.title}</h1>
             </DialogTitle>
-            <p className='text-lg sm:text-xl lg:text-2xl text-muted-foreground mb-3 sm:mb-5 mt-3 sm:mt-5'>{product?.description}</p>
+             <p className='text-lg sm:text-xl lg:text-2xl text-muted-foreground mb-3 sm:mb-5 mt-3 sm:mt-5'>{product?.description}</p>
           </div>
 
           <div className='flex items-center justify-between'>
-            <p className={`${product?.salePrice > 0 ? 'line-through' : ''} text-3xl font-bold text-primary`}>${product?.price}</p>
+            <p className={`${product?.salePrice > 0 ? 'line-through': ''} text-3xl font-bold text-primary`}>${product?.price}</p>
             {
               product?.salePrice > 0 ? <p className='text-2xl font-bold'>${product.salePrice}</p> : null
             }
@@ -41,7 +42,7 @@ const ProductDetailsDialog = ({ product, open, setOpen }) => {
               <StarIcon className='w-5 h-5 fill-primary' />
             </div>
             <span className='text-muted-foreground'>(4.5)</span>
-          </div>
+          </div> 
           <div className='mt-5 mb-5'>
             <Button className='w-full'>Add to Cart</Button>
           </div>
@@ -55,16 +56,32 @@ const ProductDetailsDialog = ({ product, open, setOpen }) => {
             <div className='grid gap-6'>
               <div className='flex gap-4'>
                 <Avatar className="w-10 h-10 border">
-                  <AvatarFallback>AJ</AvatarFallback>
+                  <AvatarFallback>AM</AvatarFallback>
                 </Avatar>
                 <div className='grid gap-1'>
                   <div className='flex items-center gap-2'>
                     <h3 className='font-bold'>Anurag Mishra</h3>
                   </div>
-
                   <p className='text-muted-foreground'>This is awesome project</p>
                 </div>
               </div>
+              <div className='flex gap-4'>
+                <Avatar className="w-10 h-10 border">
+                  <AvatarFallback>AJ</AvatarFallback>
+                </Avatar>
+                <div className='grid gap-1'>
+                  <div className='flex items-center gap-2'>
+                    <h3 className='font-bold'>Adesh Jadhav</h3>
+                  </div>
+                  <p className='text-muted-foreground'>Quality is Good</p>
+                </div>
+              </div>
+            </div>
+
+            {/* You ahve to buy the product to write review */}
+            <div className='mt-6 flex gap-2'>
+              <Input placeholder="Write a review..." />
+              <Button>Submit</Button>
             </div>
           </div>
         </div>
@@ -84,9 +101,7 @@ ProductDetailsDialog.propTypes = {
     price: PropTypes.number.isRequired,
     salePrice: PropTypes.number.isRequired,
     totalStock: PropTypes.number.isRequired
-  }).isRequired,
-  open: PropTypes.bool.isRequired, // For the open state (boolean)
-  setOpen: PropTypes.func.isRequired // For the setOpen function (function)
+  }).isRequired
 };
 
 

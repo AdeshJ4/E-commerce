@@ -15,12 +15,12 @@ import ProductDetailsDialog from '@/components/shopping/product-details';
 const ShoppingListing = () => {
 
   const dispatch = useDispatch();
-  const { isLoading, productList, productDetails } = useSelector(state => state.shopProducts);
+  const { isLoading, productList, productDetails} = useSelector(state => state.shopProducts);
   const [filters, setFilters] = useState({});   // { "category": ["men", "women", "accessories"], "brand": ["nike", "adidas"] }
   const [sort, setSort] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();  
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-
+   
 
   useEffect(() => {
     if (filters !== null && sort !== null) dispatch(fetchAllProducts({ filterParams: filters, sortParams: sort }));
@@ -31,15 +31,15 @@ const ShoppingListing = () => {
     setFilters(JSON.parse(sessionStorage.getItem('filters')) || {})
   }, [])
 
-  useEffect(() => {
-    if (filters && Object.keys(filters).length > 0) {
-      const createQueryString = createSearchParamsHelper(filters);
+  useEffect(()=> {
+    if(filters && Object.keys(filters).length > 0){      
+      const createQueryString = createSearchParamsHelper(filters);      
       setSearchParams(new URLSearchParams(createQueryString))
     }
   }, [filters]);
 
-  useEffect(() => {
-    if (productDetails !== null) {
+  useEffect(()=> {
+    if(productDetails !== null){
       setOpenDetailsDialog(true);
     }
   }, [productDetails])
@@ -48,13 +48,13 @@ const ShoppingListing = () => {
   const handleSort = (value) => {
     setSort(value)
   }
-
+  
   console.log('productDetails', productDetails);
+  
 
 
-
-  function handleFilter(getSelectedSection, getSelectedSectionOption) { // category , men
-    let cpyFilters = { ...filters };   // cpyFilters = { category: ["men"], brand: [] }
+  function handleFilter (getSelectedSection, getSelectedSectionOption) { // category , men
+    let cpyFilters = {...filters};   // cpyFilters = { category: ["men"], brand: [] }
 
     // checking category or brand present or not
     const indexOfCurrentSection = Object.keys(cpyFilters).indexOf(getSelectedSection);  // ['category', 'brand'].indexOf(category)  ==> 0
@@ -77,7 +77,7 @@ const ShoppingListing = () => {
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters))
   }
 
-  const handleGetProductDetails = (getCurrentProductId) => {
+  const handleGetProductDetails = (getCurrentProductId) => {    
     dispatch(fetchProductDetails(getCurrentProductId))
   }
 
@@ -118,14 +118,14 @@ const ShoppingListing = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
           {productList && productList.length > 0
             ? productList.map((product, i) => (
-              <ShoppingProductTile product={product} handleGetProductDetails={handleGetProductDetails} key={i} />
+                <ShoppingProductTile product={product} handleGetProductDetails={handleGetProductDetails} key={i}/>
               ))
             : null}
         </div>
       </div>
       {
-        productDetails !== null ? <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} product={productDetails} /> : ''
-      }      
+        productDetails !== null ? <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} product={productDetails} /> : null
+      }
     </div>
   );
 }
