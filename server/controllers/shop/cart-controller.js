@@ -11,6 +11,7 @@ const handleResponse = require("../../utils/handleResponse");
 const addToCart = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
+
     if (!userId || !productId || quantity <= 0)
       return handleResponse({
         res,
@@ -21,7 +22,7 @@ const addToCart = async (req, res) => {
 
     //  check user & product exists in DB or not
     const user = await User.findById(userId);
-    const product = await Product(productId);
+    const product = await Product.findById(productId);
 
     if (!user || !product) {
       return handleResponse({
@@ -75,6 +76,7 @@ const fetchCartItems = async (req, res) => {
   try {
     // check client send userId or not
     const { userId } = req.params;
+
     if (!userId)
       return handleResponse({
         res,
@@ -85,6 +87,7 @@ const fetchCartItems = async (req, res) => {
 
     // check user exists in DB or not
     const user = await User.findById(userId);
+    
     if (!user) {
       return handleResponse({
         res,
@@ -98,11 +101,10 @@ const fetchCartItems = async (req, res) => {
     // we don't want to send just productId, we will send whole product
     // suppose inside cart we have 4 products and admin deleted two products then when you populate cart then it gives null to that 2 deleted products
     const cart = await Cart.findOne({ userId }).populate({
-      path: items.productId,
+      path: "items.productId",
       select: "image title price salePrice totalStock",
     });
 
-    console.log("fetchCartItems cart ", cart);
 
     if (!cart || cart.items.length === 0)
       return handleResponse({
@@ -118,15 +120,14 @@ const fetchCartItems = async (req, res) => {
     // If a product has been deleted from the Product collection, the productId would be null in the cart.
     const validItems = cart.items.filter((product) => product.productId);
 
-    console.log("validItems", validItems);
+    
 
     if (validItems.length !== cart.items.length) {
       cart.items = validItems;
       await cart.save();
     }
 
-    console.log("fetchCartItems cart:", cart);
-
+    
     const populateCartItems = cart.items.map((item) => ({
       productId: item.productId._id,
       image: item.productId.image,
@@ -135,6 +136,7 @@ const fetchCartItems = async (req, res) => {
       salePrice: item.productId.salePrice,
       totalStock: item.productId.totalStock,
     }));
+
 
     return handleResponse({
       res,
@@ -213,8 +215,6 @@ const updateCartItemsQty = async (req, res) => {
       select: "image title price salePrice totalStock",
     });
 
-    console.log("update cart:", cart);
-
     const populateCartItems = cart.items.map((item) => ({
       productId: item.productId ? item.productId._id : null,
       image: item.productId ? item.productId.image : null,
@@ -292,7 +292,6 @@ const deleteCartItems = async (req, res) => {
       select: "image title price salePrice totalStock",
     });
 
-    console.log("delete cart:", cart);
 
     const populateCartItems = cart.items.map((item) => ({
       productId: item.productId ? item.productId._id : null,

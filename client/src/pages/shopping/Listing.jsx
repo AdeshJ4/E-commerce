@@ -10,17 +10,18 @@ import ShoppingProductTile from '@/components/shopping/product-tile';
 import { useSearchParams } from 'react-router-dom';
 import createSearchParamsHelper from '@/helpers/searchParamsHelper';
 import ProductDetailsDialog from '@/components/shopping/product-details';
+import { addToCart } from '@/store/slices/shop-slice/cart-slice';
 
 
 const ShoppingListing = () => {
 
   const dispatch = useDispatch();
-  const { isLoading, productList, productDetails} = useSelector(state => state.shopProducts);
+  const { productList, productDetails } = useSelector(state => state.shopProducts);
+  const { user } = useSelector(state => state.auth);
   const [filters, setFilters] = useState({});   // { "category": ["men", "women", "accessories"], "brand": ["nike", "adidas"] }
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();  
-  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-   
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);   
 
   useEffect(() => {
     if (filters !== null && sort !== null) dispatch(fetchAllProducts({ filterParams: filters, sortParams: sort }));
@@ -48,10 +49,11 @@ const ShoppingListing = () => {
   const handleSort = (value) => {
     setSort(value)
   }
-  
-  console.log('productDetails', productDetails);
-  
 
+  const handleAddToCart = (getCurrentProductId) => {
+    console.log(getCurrentProductId);
+    dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 })).then(data => console.log())
+  }
 
   function handleFilter (getSelectedSection, getSelectedSectionOption) { // category , men
     let cpyFilters = {...filters};   // cpyFilters = { category: ["men"], brand: [] }
@@ -105,7 +107,10 @@ const ShoppingListing = () => {
               <DropdownMenuContent align="end" className="w-[200px]">
                 <DropdownMenuRadioGroup value={sort} onValueChange={handleSort}>
                   {sortOptions.map((sortItem) => (
-                    <DropdownMenuRadioItem value={sortItem.id} key={sortItem.id}>
+                    <DropdownMenuRadioItem
+                      value={sortItem.id}
+                      key={sortItem.id}
+                    >
                       {sortItem.label}
                     </DropdownMenuRadioItem>
                   ))}
@@ -118,14 +123,23 @@ const ShoppingListing = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
           {productList && productList.length > 0
             ? productList.map((product, i) => (
-                <ShoppingProductTile product={product} handleGetProductDetails={handleGetProductDetails} key={i}/>
+              <ShoppingProductTile
+                product={product}
+                handleGetProductDetails={handleGetProductDetails}
+                handleAddToCart={handleAddToCart}
+                key={i}
+              />
               ))
             : null}
         </div>
       </div>
-      {
-        productDetails !== null ? <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} product={productDetails} /> : null
-      }
+      {productDetails !== null ? (
+        <ProductDetailsDialog
+          open={openDetailsDialog}
+          setOpen={setOpenDetailsDialog}
+          product={productDetails}
+        />
+      ) : null}
     </div>
   );
 }

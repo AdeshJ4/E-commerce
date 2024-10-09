@@ -47,8 +47,8 @@ const getFilteredProducts = async (req, res) => {
         break;
     }
 
-    console.log('filters', filters);  //  {category: { '$in': [ 'men', 'women' ] }, brand: { '$in': [ 'nike', 'puma' ] }}
-    console.log('sort', sort);   // { price: 1 }
+    // console.log('filters', filters);  //  {category: { '$in': [ 'men', 'women' ] }, brand: { '$in': [ 'nike', 'puma' ] }}
+    // console.log('sort', sort);   // { price: 1 }
     
 
     const products = await Product.find(filters).sort(sort);  // db.Product.find({category: { '$in': [ 'men', 'women' ] }, brand: { '$in': [ 'nike', 'puma' ] }}).sort({ price: 1 })
