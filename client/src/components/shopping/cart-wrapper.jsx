@@ -4,7 +4,6 @@ import { Button } from '../ui/button'
 import UserCartItemsContent from './cart-items-content';
 
 const UserCartWrapper = ({ cartItems }) => {
-    console.log('cartItems', cartItems);
     
     return (
         <SheetContent className="sm:max-w-md">

@@ -11,7 +11,16 @@ const initialState ={
 export const addToCart = createAsyncThunk("/shop/cart/addToCart", async ({ userId, productId, quantity }) => {
     const response = await axios.post(`http://localhost:5000/api/shop/cart/add`, { userId, productId, quantity })
     return response?.data;
-})
+});
+
+// export const addToCart = createAsyncThunk("/shop/cart/addToCart", async ({ userId, productId, quantity }, { rejectWithValue }) => {
+//     try {
+//         const response = await axios.post(`http://localhost:5000/api/shop/cart/add`, { userId, productId, quantity });
+//         return response?.data;
+//     } catch (error) {
+//         return rejectWithValue(error.response?.data);
+//     }
+// });
 
 export const fetchCartItems = createAsyncThunk("/shop/cart/fetchCartItems", async(userId) => {
     const response = await axios.get(`http://localhost:5000/api/shop/cart/get/${userId}`);

@@ -58,16 +58,16 @@ const ShoppingProductTile = ({ product, handleGetProductDetails, handleAddToCart
 
 ShoppingProductTile.propTypes = {
   product: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    brand: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    salePrice: PropTypes.number, // optional, only appears if the product is on sale
+    _id: PropTypes.string,
+    image: PropTypes.string,
+    title: PropTypes.string,
+    category: PropTypes.string,
+    brand: PropTypes.string,
+    price: PropTypes.number,
+    salePrice: PropTypes.number, 
   }).isRequired,
-  handleGetProductDetails: PropTypes.func.isRequired,
-  handleAddToCart: PropTypes.func.isRequired,
+  handleGetProductDetails: PropTypes.func,
+  handleAddToCart: PropTypes.func,
 };
 
 

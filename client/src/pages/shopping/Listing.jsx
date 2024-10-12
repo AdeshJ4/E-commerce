@@ -10,7 +10,8 @@ import ShoppingProductTile from '@/components/shopping/product-tile';
 import { useSearchParams } from 'react-router-dom';
 import createSearchParamsHelper from '@/helpers/searchParamsHelper';
 import ProductDetailsDialog from '@/components/shopping/product-details';
-import { addToCart } from '@/store/slices/shop-slice/cart-slice';
+import { addToCart, fetchCartItems } from '@/store/slices/shop-slice/cart-slice';
+import { useToast } from '@/hooks/use-toast';
 
 
 const ShoppingListing = () => {
@@ -22,6 +23,7 @@ const ShoppingListing = () => {
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();  
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);   
+  const { toast } = useToast();
 
   useEffect(() => {
     if (filters !== null && sort !== null) dispatch(fetchAllProducts({ filterParams: filters, sortParams: sort }));
@@ -50,10 +52,49 @@ const ShoppingListing = () => {
     setSort(value)
   }
 
+  // const handleAddToCart = (getCurrentProductId) => {
+  //   dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
+  //   .then((data) => {
+  //     console.log('addToCart data ', data);
+      
+  //     if(data?.payload.success){
+  //       dispatch(fetchCartItems(user?.id));
+  //       toast({
+  //         title: data?.payload?.message
+  //       })
+  //     }
+  //   })
+  // }
+
   const handleAddToCart = (getCurrentProductId) => {
-    console.log(getCurrentProductId);
-    dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 })).then(data => console.log())
-  }
+    dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
+    .then((data) => {
+        console.log('addToCart data ', data);
+
+        dispatch(fetchCartItems(user?.id));
+        if (data?.payload?.success) {
+            toast({
+                title: data?.payload?.message,
+                status: 'success'
+            });
+        } else {
+            // Handle failure response
+            toast({
+                title: data?.payload?.message || 'Failed to add item to cart',
+                status: 'error'
+            });
+        }
+    })
+    .catch((error) => {
+        // This will handle any unhandled errors
+        console.error('Error adding to cart: ', error);
+        toast({
+            title: 'An error occurred',
+            description: error.message || 'Something went wrong!',
+            status: 'error'
+        });
+    });
+};
 
   function handleFilter (getSelectedSection, getSelectedSectionOption) { // category , men
     let cpyFilters = {...filters};   // cpyFilters = { category: ["men"], brand: [] }
