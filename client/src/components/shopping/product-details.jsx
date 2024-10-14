@@ -6,13 +6,40 @@ import { Separator } from '../ui/separator';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { StarIcon } from 'lucide-react';
 import { Input } from '../ui/input';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '@/store/slices/shop-slice/cart-slice';
+import { useToast } from '@/hooks/use-toast';
 
 const ProductDetailsDialog = ({ product, open, setOpen }) => {
 
-  console.log('ProductDetailsDialog', product);
-  
+  const dispatch = useDispatch();
+  const { toast } = useToast();
+  const { user } = useSelector(state => state.auth)
+
+  const handleAddToCart = (getCurrentProductId) => {
+    dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
+      .then((data) => {
+        if (data?.payload?.success) {
+          toast({
+            title: data?.payload?.message
+          });
+        } else {
+          toast({
+            title: data?.payload?.message || 'Failed to add item to cart',
+            variant: 'destructive'
+          });
+        }
+      })
+  };
+
+  function handleDialogClose() {
+    setOpen(false);
+    // dispatch(setProduct)
+  }
+
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleDialogClose}>
       {/* <DialogContent className='grid grid-cols-2 gap-8 sm:p-5 max-w-[80vw] sm:max-w-[70vw] lg:max-w-[60vw]'> */}
       <DialogContent className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 max-w-[95vw] sm:max-w-[80vw] lg:max-w-[70vw]'>
         <div className='relative overflow-hidden'>
@@ -44,7 +71,7 @@ const ProductDetailsDialog = ({ product, open, setOpen }) => {
             <span className='text-muted-foreground'>(4.5)</span>
           </div> 
           <div className='mt-5 mb-5'>
-            <Button className='w-full'>Add to Cart</Button>
+            <Button onClick={() => handleAddToCart(product?._id)} className='w-full'>Add to Cart</Button>
           </div>
 
           <Separator />
@@ -78,7 +105,7 @@ const ProductDetailsDialog = ({ product, open, setOpen }) => {
               </div>
             </div>
 
-            {/* You ahve to buy the product to write review */}
+            {/* You have to buy the product to write review */}
             <div className='mt-6 flex gap-2'>
               <Input placeholder="Write a review..." />
               <Button>Submit</Button>
@@ -92,16 +119,18 @@ const ProductDetailsDialog = ({ product, open, setOpen }) => {
 
 ProductDetailsDialog.propTypes = {
   product: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    brand: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    salePrice: PropTypes.number.isRequired,
-    totalStock: PropTypes.number.isRequired
-  }).isRequired
+    _id: PropTypes.string,
+    image: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    category: PropTypes.string,
+    brand: PropTypes.string,
+    price: PropTypes.number,
+    salePrice: PropTypes.number,
+    totalStock: PropTypes.number
+  }),
+  open: PropTypes.bool,
+  setOpen: PropTypes.func,
 };
 
 

@@ -10,7 +10,7 @@ import { Avatar, AvatarFallback } from '../ui/avatar';
 import { logoutUser } from '@/store/slices/auth-slice';
 import UserCartWrapper from './cart-wrapper';
 import { fetchCartItems } from '@/store/slices/shop-slice/cart-slice';
-
+import { useToast } from '@/hooks/use-toast';
 
 function MenuItems() {
   return (
@@ -30,6 +30,7 @@ function HeaderRightContent() {
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.auth);
   const { cartItems } = useSelector(state => state.shopCart);
+  const { toast } = useToast();
 
   useEffect(() => {
     dispatch(fetchCartItems(user?.id))

@@ -10,7 +10,7 @@ import ShoppingProductTile from '@/components/shopping/product-tile';
 import { useSearchParams } from 'react-router-dom';
 import createSearchParamsHelper from '@/helpers/searchParamsHelper';
 import ProductDetailsDialog from '@/components/shopping/product-details';
-import { addToCart, fetchCartItems } from '@/store/slices/shop-slice/cart-slice';
+import { addToCart } from '@/store/slices/shop-slice/cart-slice';
 import { useToast } from '@/hooks/use-toast';
 
 
@@ -26,7 +26,17 @@ const ShoppingListing = () => {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (filters !== null && sort !== null) dispatch(fetchAllProducts({ filterParams: filters, sortParams: sort }));
+    if (filters !== null && sort !== null) {
+      dispatch(fetchAllProducts({ filterParams: filters, sortParams: sort }))
+        .then((data) => {
+          if (data?.payload?.success === false) {
+            toast({
+              title: data?.payload?.message || 'Failed to fetched prducts',
+              variant: 'destructive'
+            })
+          }
+        })
+    }
   }, [dispatch, sort, filters]);
 
   useEffect(()=>{
@@ -52,49 +62,25 @@ const ShoppingListing = () => {
     setSort(value)
   }
 
-  // const handleAddToCart = (getCurrentProductId) => {
-  //   dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
-  //   .then((data) => {
-  //     console.log('addToCart data ', data);
-      
-  //     if(data?.payload.success){
-  //       dispatch(fetchCartItems(user?.id));
-  //       toast({
-  //         title: data?.payload?.message
-  //       })
-  //     }
-  //   })
-  // }
-
+  
   const handleAddToCart = (getCurrentProductId) => {
     dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
     .then((data) => {
-        console.log('addToCart data ', data);
 
-        dispatch(fetchCartItems(user?.id));
+      console.log('data', data);
+      
         if (data?.payload?.success) {
             toast({
-                title: data?.payload?.message,
-                status: 'success'
+                title: data?.payload?.message
             });
         } else {
-            // Handle failure response
             toast({
                 title: data?.payload?.message || 'Failed to add item to cart',
-                status: 'error'
+                variant: 'destructive'
             });
         }
     })
-    .catch((error) => {
-        // This will handle any unhandled errors
-        console.error('Error adding to cart: ', error);
-        toast({
-            title: 'An error occurred',
-            description: error.message || 'Something went wrong!',
-            status: 'error'
-        });
-    });
-};
+  };
 
   function handleFilter (getSelectedSection, getSelectedSectionOption) { // category , men
     let cpyFilters = {...filters};   // cpyFilters = { category: ["men"], brand: [] }
@@ -174,13 +160,11 @@ const ShoppingListing = () => {
             : null}
         </div>
       </div>
-      {productDetails !== null ? (
         <ProductDetailsDialog
           open={openDetailsDialog}
           setOpen={setOpenDetailsDialog}
           product={productDetails}
         />
-      ) : null}
     </div>
   );
 }

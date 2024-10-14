@@ -1,41 +1,27 @@
-const cart = {
-    userId: 1001,
-    items: [
-      {
-        productId: {
-          _id: 1,
-          image: "image1.png",
-          title: "Product 1",
-          price: 100,
-          salePrice: 90,
-          totalStock: 100,
-        },
-        quantity: 57
-      },
-      {
-        productId: {
-          _id: 2,
-          image: "image2.png",
-          title: "Product 2",
-          price: 50,
-          salePrice: 45,
-          totalStock: 200,
-        },
-        quantity: 20
-      },
-      {
-        productId: null,  // Product 3 was deleted
-        quantity: 40
-      },
-      {
-        productId: null,  // Product 4 was deleted
-        quantity: 51
-      }
-    ]
-  };
-  
+const arr = [
+  {
+      "productId": "66f7e4b0e36cbb2426028aaf",
+      "image": "http://res.cloudinary.com/dytygoezb/image/upload/v1727521960/zijj9898yskkwos8sd8m.jpg",
+      "title": "Sun Glasses",
+      "price": 90,
+      "salePrice": 60,
+      "totalStock": 1,
+      "quantity": 4
+  },
+  {
+      "productId": "66f7e547e36cbb2426028abd",
+      "image": "http://res.cloudinary.com/dytygoezb/image/upload/v1727522092/vrcak5pci8vazwptwsxu.jpg",
+      "title": "One Piece",
+      "price": 20,
+      "salePrice": 50,
+      "totalStock": 10,
+      "quantity": 9
+  }
+]
 
-  const validItems = cart.items.filter((product) => product.productId);
 
-  console.log(validItems);
-  
+const total = arr.reduce((acc, curEle) => {
+  return acc + (curEle.salePrice > 0 ? curEle?.salePrice : curEle?.price) * curEle?.quantity;
+})
+
+console.log(total);

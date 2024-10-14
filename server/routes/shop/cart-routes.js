@@ -6,7 +6,7 @@ const cartRouter = express.Router();
 cartRouter.post('/add', addToCart);
 cartRouter.get('/get/:userId', fetchCartItems);
 cartRouter.put('/update-cart', updateCartItemsQty);
-cartRouter.delete('/:userId/:productId', updateCartItemsQty);
+cartRouter.delete('/:userId/:productId', deleteCartItems);
 
 
 module.exports = cartRouter;

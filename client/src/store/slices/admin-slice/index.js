@@ -6,44 +6,55 @@ const initialState = {
   productList: [],
 };
 
-export const addNewProduct = createAsyncThunk("/admin/products/addNewProduct", async (formData) => {
-  const result = await axios.post("http://localhost:5000/api/admin/products/add", formData, {
-    headers: {
-      "Content-Type": "application/json",
-    },
+export const addNewProduct = createAsyncThunk("/admin/products/addNewProduct", async (formData, { rejectWithValue }) => {
+  try {
+    const result = await axios.post("http://localhost:5000/api/admin/products/add", formData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+    );
+    return result?.data;
+  } catch (error) {
+    return rejectWithValue(error?.response?.data);
   }
-  );
-
-  return result?.data;
 }
 );
 
-export const fetchAllProducts = createAsyncThunk(
-  "/admin/products/fetchAllProducts",
-  async () => {
+export const fetchAllProducts = createAsyncThunk("/admin/products/fetchAllProducts", async (_, { rejectWithValue }) => {
+  try {
     const response = await axios.get("http://localhost:5000/api/admin/products/get");
-
     return response?.data;
+  } catch (error) {
+    return rejectWithValue(error?.response?.data);
   }
+}
 )
 
-export const editProduct = createAsyncThunk("/admin/products/editProduct", async ({ id, formData }) => {
-  const result = await axios.put(
-    `http://localhost:5000/api/admin/products/edit/${id}`, formData, {
-    headers: {
-      "Content-Type": "application/json",
-    },
+export const editProduct = createAsyncThunk("/admin/products/editProduct", async ({ id, formData }, { rejectWithValue }) => {
+  try {
+    const result = await axios.put(
+      `http://localhost:5000/api/admin/products/edit/${id}`, formData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+    );
+    return result?.data;
+  } catch (error) {
+    return rejectWithValue(error?.response?.data);
   }
-  );
-  return result?.data;
 }
 );
 
 
-export const deleteProduct = createAsyncThunk("/admin/products/deleteProduct", async (id) => {
-  const result = await axios.delete(`http://localhost:5000/api/admin/products/delete/${id}`);
-
-  return result?.data;
+export const deleteProduct = createAsyncThunk("/admin/products/deleteProduct", async (id, { rejectWithValue }) => {
+  try {
+    const result = await axios.delete(`http://localhost:5000/api/admin/products/delete/${id}`);
+    return result?.data;
+  } catch (error) {
+    return rejectWithValue(error?.response?.data);
+  }
 })
 
 

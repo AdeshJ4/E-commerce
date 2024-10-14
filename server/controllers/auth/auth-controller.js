@@ -31,7 +31,7 @@ const loginUser = async (req, res) => {
         const  userAvailable = await User.findOne({ email });
 
         if(userAvailable && (await bcrypt.compare(password, userAvailable.password))){
-            const token =  userAvailable.generateToken();
+            const token =  userAvailable.generateToken();            
             return res.cookie('token', token, {httpOnly: true, secure: false}).json({
                 success: true,
                 message: 'Logged In Successfully',

@@ -1,7 +1,5 @@
 import axios from "axios";
-
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
 
 const initialState = {
   isLoading: false,
@@ -10,27 +8,31 @@ const initialState = {
 }
 
 
-export const fetchAllProducts = createAsyncThunk( "/shop/products/fetchAllProducts",  async({filterParams, sortParams}) => {// filterParams: { "category": ["men", "women"], "brand": ["nike", "adidas"]}, sortParams: price-lowtohigh  
-  const query = new URLSearchParams({  // query : URLSearchParams { 'category' => 'men,women', 'brand'=> 'nike,adidas', 'sortBy'=> 'price-lowtohigh'} 
+export const fetchAllProducts = createAsyncThunk( "/shop/products/fetchAllProducts",  async({filterParams, sortParams}, { rejectWithValue }) => {
+  const query = new URLSearchParams({  
     ...filterParams, 
     sortBy: sortParams
   });
-  
-    const response = await axios.get(`http://localhost:5000/api/shop/products/get?${query}`);  // /api/shop/products/get?category=men%2Cwomen&brand=nike%2Cadidas&sortBy=price-lowtohigh
+
+  try{
+    // /api/shop/products/get?category=men%2Cwomen&brand=nike%2Cadidas&sortBy=price-lowtohigh
+    const response = await axios.get(`http://localhost:5000/api/shop/products/get?${query}`);  
     return response?.data;
-})
-
-
-export const fetchProductDetails = createAsyncThunk("/shop/products/fetchProductDetails", async(id) => {
+  }catch(error){
+    return rejectWithValue(error?.response?.data);
+  }
   
-  const response = await axios.get(`http://localhost:5000/api/shop/products/get/${id}`);
-  return response?.data;
 })
 
 
-
-
-
+export const fetchProductDetails = createAsyncThunk("/shop/products/fetchProductDetails", async (id, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`http://localhost:5000/api/shop/products/get/${id}`);
+    return response?.data;
+  } catch (error) {
+    return rejectWithValue(error?.response?.data);
+  }
+})
 
 
 
@@ -69,5 +71,5 @@ const shopProductSlice =  createSlice({
   }
 })
 
-
+export const { setProductDetails } = shopProductSlice.actions;
 export default shopProductSlice.reducer;

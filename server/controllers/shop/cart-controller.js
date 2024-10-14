@@ -54,15 +54,30 @@ const addToCart = async (req, res) => {
 
     await cart.save();
 
+    await cart.populate({
+      path: "items.productId",
+      select: "image title price salePrice totalStock",
+    });
+
+    const populateCartItems = cart.items.map((item) => ({
+      productId: item.productId ? item.productId._id : null,
+      image: item.productId ? item.productId.image : null,
+      title: item.productId ? item.productId.title : "Product not found",
+      price: item.productId ? item.productId.price : null,
+      salePrice: item.productId ? item.productId.salePrice : null,
+      totalStock: item.productId ? item.productId.totalStock : null,
+      quantity: item.quantity,
+    }));
+
     return handleResponse({
       res,
       status: 201,
-      data: cart,
+      data: { ...cart._doc, items: populateCartItems },
       message: "Added to cart",
       success: true,
     });
   } catch (err) {
-    handleResponse({ res, status: 500, message: err.message, success: false });
+    return handleResponse({ res, status: 500, message: err.message, success: false });
   }
 };
 
@@ -106,6 +121,8 @@ const fetchCartItems = async (req, res) => {
     });
 
 
+
+
     if (!cart || cart.items.length === 0)
       return handleResponse({
         res,
@@ -135,8 +152,8 @@ const fetchCartItems = async (req, res) => {
       price: item.productId.price,
       salePrice: item.productId.salePrice,
       totalStock: item.productId.totalStock,
-    }));
-
+      quantity: item.quantity
+    }));    
 
     return handleResponse({
       res,
@@ -146,7 +163,7 @@ const fetchCartItems = async (req, res) => {
       message: "Cart fetch successfully",
     });
   } catch (err) {
-    handleResponse({ res, status: 500, message: err.message, success: false });
+    return handleResponse({ res, status: 500, message: err.message, success: false });
   }
 };
 
@@ -160,7 +177,7 @@ const updateCartItemsQty = async (req, res) => {
   try {
     //check client send necessary data
     const { userId, productId, quantity } = req.body;
-    if (!userId || !productId || quantity <= 0)
+    if (!userId || !productId || quantity < 0)
       return handleResponse({
         res,
         status: 400,
@@ -170,7 +187,7 @@ const updateCartItemsQty = async (req, res) => {
 
     //  check user & product exists in DB or not
     const user = await User.findById(userId);
-    const product = await Product(productId);
+    const product = await Product.findById(productId);
 
     if (!user || !product) {
       return handleResponse({
@@ -207,7 +224,11 @@ const updateCartItemsQty = async (req, res) => {
       });
     }
 
-    cart.items[findCurrentProductIndex].quantity += quantity;
+    cart.items[findCurrentProductIndex].quantity = quantity;
+
+
+    console.log('cart.items[findCurrentProductIndex]', cart.items[findCurrentProductIndex]);
+
     await cart.save();
 
     await cart.populate({
@@ -230,7 +251,7 @@ const updateCartItemsQty = async (req, res) => {
       status: 200,
       data: { ...cart._doc, items: populateCartItems },
       success: true,
-      message: "Cart fetch successfully",
+      message: "Item Updated",
     });
   } catch (err) {
     handleResponse({ res, status: 500, message: err.message, success: false });
@@ -245,7 +266,7 @@ const updateCartItemsQty = async (req, res) => {
 */
 const deleteCartItems = async (req, res) => {
   try {
-    const { userId, productId } = req.params;
+    const { userId, productId } = req.params;    
     if (!userId || !productId)
       return handleResponse({
         res,
@@ -255,7 +276,7 @@ const deleteCartItems = async (req, res) => {
       });
 
     const user = await User.findById(userId);
-    const product = await Product(productId);
+    const product = await Product.findById(productId);
 
     if (!user || !product) {
       return handleResponse({
@@ -292,7 +313,6 @@ const deleteCartItems = async (req, res) => {
       select: "image title price salePrice totalStock",
     });
 
-
     const populateCartItems = cart.items.map((item) => ({
       productId: item.productId ? item.productId._id : null,
       image: item.productId ? item.productId.image : null,
@@ -308,7 +328,7 @@ const deleteCartItems = async (req, res) => {
       status: 200,
       data: { ...cart._doc, items: populateCartItems },
       success: true,
-      message: "Cart fetch successfully",
+      message: "Items removed from Cart",
     });
   } catch (err) {
     handleResponse({ res, status: 500, message: err.message, success: false });
