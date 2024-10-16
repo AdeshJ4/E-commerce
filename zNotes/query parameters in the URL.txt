@@ -1,0 +1,41 @@
+useSearchParams is a hook provided by React Router, a popular routing library in React. 
+It allows you to access and manipulate query parameters in the URL.
+
+
+Key Features:
+
+-> Get query parameters: You can use useSearchParams to extract parameters from the URL's query string.
+-> Set or modify query parameters: You can update the query parameters and reflect those changes in the URL.
+
+
+
+Getting Query Parameters:
+let [searchParams, setSearchParams] = useSearchParams();
+const category = searchParams.get('category');
+const sortBy = searchParams.get('sortBy');
+
+This grabs the values of the category and sortBy query parameters from the URL. 
+For example, if the URL is https://shopify/shop/listing?category=electronics&sortBy=rating, it extracts:
+
+category = 'electronics'
+sortBy = 'rating'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
