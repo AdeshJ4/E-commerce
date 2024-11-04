@@ -72,7 +72,7 @@ const addProduct = async (req, res) => {
 //   }
 // };
 
-const fetchAllProducts = async (req, res) => {
+const fetchAllFilteredProducts = async (req, res) => {
   try {
     const listOfProducts = await Product.find({});
     return handleResponse({
@@ -196,7 +196,7 @@ const deleteProduct = async (req, res) => {
 module.exports = {
   handleImageUpload,
   addProduct,
-  fetchAllProducts,
+  fetchAllFilteredProducts,
   editProduct,
   deleteProduct,
 };

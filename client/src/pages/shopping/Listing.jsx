@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { ArrowUpDownIcon } from 'lucide-react';
 import { sortOptions } from '@/config';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllProducts, fetchProductDetails } from '@/store/slices/shop-slice/product-slice';
+import { fetchAllFilteredProducts, fetchProductDetails } from '@/store/slices/shop-slice/product-slice';
 import ShoppingProductTile from '@/components/shopping/product-tile';
 import { useSearchParams } from 'react-router-dom';
 import createSearchParamsHelper from '@/helpers/searchParamsHelper';
@@ -27,7 +27,7 @@ const ShoppingListing = () => {
 
   useEffect(() => {
     if (filters !== null && sort !== null) {
-      dispatch(fetchAllProducts({ filterParams: filters, sortParams: sort }))
+      dispatch(fetchAllFilteredProducts({ filterParams: filters, sortParams: sort }))
         .then((data) => {
           if (data?.payload?.success === false) {
             toast({

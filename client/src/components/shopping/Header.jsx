@@ -11,14 +11,19 @@ import { logoutUser } from '@/store/slices/auth-slice';
 import UserCartWrapper from './cart-wrapper';
 import { fetchCartItems } from '@/store/slices/shop-slice/cart-slice';
 import { useToast } from '@/hooks/use-toast';
+import { Label } from '../ui/label';
 
 function MenuItems() {
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
       {shoppingViewHeaderMenuItems.map((menuItem) => (
-        <Link className='text-sm font-medium' key={menuItem.id} to={menuItem.path}>
+        <Label
+          className="text-sm font-medium"
+          key={menuItem.id}
+          // tobrandItem={menuItem.path}
+        >
           {menuItem.label}
-        </Link>
+        </Label>
       ))}
     </nav>
   );

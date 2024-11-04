@@ -4,56 +4,61 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isLoading: false,
   productList: [],
-  productDetails: null
-}
+  productDetails: null,
+};
 
+export const fetchAllFilteredProducts = createAsyncThunk(
+  "/shop/products/fetchAllFilteredProducts",
+  async ({ filterParams, sortParams }, { rejectWithValue }) => {
+    const query = new URLSearchParams({
+      ...filterParams,
+      sortBy: sortParams,
+    });
 
-export const fetchAllProducts = createAsyncThunk( "/shop/products/fetchAllProducts",  async({filterParams, sortParams}, { rejectWithValue }) => {
-  const query = new URLSearchParams({  
-    ...filterParams, 
-    sortBy: sortParams
-  });
-
-  try{
-    // /api/shop/products/get?category=men%2Cwomen&brand=nike%2Cadidas&sortBy=price-lowtohigh
-    const response = await axios.get(`http://localhost:5000/api/shop/products/get?${query}`);  
-    return response?.data;
-  }catch(error){
-    return rejectWithValue(error?.response?.data);
+    try {
+      // /api/shop/products/get?category=men%2Cwomen&brand=nike%2Cadidas&sortBy=price-lowtohigh
+      const response = await axios.get(
+        `http://localhost:5000/api/shop/products/get?${query}`
+      );
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
   }
-  
-})
+);
 
-
-export const fetchProductDetails = createAsyncThunk("/shop/products/fetchProductDetails", async (id, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`http://localhost:5000/api/shop/products/get/${id}`);
-    return response?.data;
-  } catch (error) {
-    return rejectWithValue(error?.response?.data);
+export const fetchProductDetails = createAsyncThunk(
+  "/shop/products/fetchProductDetails",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/shop/products/get/${id}`
+      );
+      return response?.data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
   }
-})
+);
 
-
-
-const shopProductSlice =  createSlice({
-  name: 'shoppingProductsSlice',
+const shopProductSlice = createSlice({
+  name: "shoppingProductsSlice",
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
 
-      // fetchAllProducts
-      .addCase(fetchAllProducts.pending, (state) => {
-        state.isLoading = true
+      // fetchAllFilteredProducts
+      .addCase(fetchAllFilteredProducts.pending, (state) => {
+        state.isLoading = true;
       })
-      .addCase(fetchAllProducts.fulfilled, (state, action) => {        
+      .addCase(fetchAllFilteredProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.productList = action?.payload?.data;
       })
-      .addCase(fetchAllProducts.rejected, (state, action) => {
+      .addCase(fetchAllFilteredProducts.rejected, (state, action) => {
         state.isLoading = false;
-        state.productList = []
+        state.productList = [];
       })
 
       // fetchProductDetails
@@ -67,9 +72,9 @@ const shopProductSlice =  createSlice({
       .addCase(fetchProductDetails.rejected, (state, action) => {
         state.isLoading = false;
         state.productDetails = null;
-      })
-  }
-})
+      });
+  },
+});
 
 export const { setProductDetails } = shopProductSlice.actions;
 export default shopProductSlice.reducer;

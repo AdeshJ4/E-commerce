@@ -53,7 +53,14 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
-  		}
+  		},
+		container: {
+			center: true,
+			padding: {
+			  DEFAULT: "1rem",
+			  sm: "3rem",
+			},
+		  },
   	}
   },
   plugins: [require("tailwindcss-animate")],
