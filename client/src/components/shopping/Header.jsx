@@ -14,13 +14,31 @@ import { useToast } from '@/hooks/use-toast';
 import { Label } from '../ui/label';
 
 function MenuItems() {
+  const navigate = useNavigate();
+
+  function handleNavigate(getCurrentMenuItem) {
+
+    console.log(' I am here ');
+
+    console.log('getCurrentMenuItem', getCurrentMenuItem);
+
+    sessionStorage.removeItem("filters");
+    const currentFilter = getCurrentMenuItem.id !== 'home' ? {
+      category: [getCurrentMenuItem.id],
+    }
+      : null;
+
+    sessionStorage.setItem('filters', JSON.stringify(currentFilter));
+    navigate(getCurrentMenuItem.path)
+  }
+
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <Label
-          className="text-sm font-medium"
+          className="text-sm font-medium cursor-pointer"
           key={menuItem.id}
-          // tobrandItem={menuItem.path}
+          onClick={() => handleNavigate(menuItem)}
         >
           {menuItem.label}
         </Label>
@@ -55,7 +73,7 @@ function HeaderRightContent() {
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       <Sheet open={openCartSheet} onOpenChange={openCartSheetHandler}>
-        <Button onClick={()=>setOpenCartSheet(true)} variant="outline" size="icon">
+        <Button onClick={() => setOpenCartSheet(true)} variant="outline" size="icon">
           <ShoppingCart className="w-6 h-6" />
           <span className="sr-only">User Cart</span>
         </Button>

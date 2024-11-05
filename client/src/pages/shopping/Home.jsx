@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button';
 import { BabyIcon, Bitcoin, Check, ChevronLeftIcon, ChevronRightIcon, CloudLightning, Footprints, Glasses, Shirt, ShirtIcon, UmbrellaIcon, WashingMachine, WatchIcon } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllFilteredProducts } from '@/store/slices/shop-slice/product-slice';
+import { fetchAllFilteredProducts, fetchProductDetails } from '@/store/slices/shop-slice/product-slice';
 import ShoppingProductTile from '@/components/shopping/product-tile';
 import { useNavigate } from 'react-router-dom';
+import { addToCart } from '@/store/slices/shop-slice/cart-slice';
+import { useToast } from '@/hooks/use-toast';
 
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: ShirtIcon },
@@ -35,6 +37,9 @@ const ShoppingHome = () => {
   const dispatch = useDispatch();
   const { productList, productDetails } = useSelector(state => state.shopProducts);
   const navigate = useNavigate()
+  const { user } = useSelector(state => state.auth);
+  const { toast } = useToast();
+
 
   console.log('productList, productDetails', productList, productDetails);
 
@@ -62,8 +67,6 @@ const ShoppingHome = () => {
 
 
   const handleNavigateToListingPage = (getCurrentItem, section) => {
-    console.log('getCurrentItem, section', getCurrentItem, section);
-
     sessionStorage.removeItem('filters');
     const currentFilter = {
       [section]: [getCurrentItem.id]
@@ -72,6 +75,29 @@ const ShoppingHome = () => {
     navigate(`/shop/listing`)
   }
 
+  function handleGetProductDetails (getCurrentProductId) {
+    dispatch(fetchProductDetails(getCurrentProductId))
+  }
+
+    
+  const handleAddToCart = (getCurrentProductId) => {
+    dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
+    .then((data) => {
+
+      console.log('data', data);
+      
+        if (data?.payload?.success) {
+            toast({
+                title: data?.payload?.message
+            });
+        } else {
+            toast({
+                title: data?.payload?.message || 'Failed to add item to cart',
+                variant: 'destructive'
+            });
+        }
+    })
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -164,7 +190,11 @@ const ShoppingHome = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {productList && productList.length > 0
               ? productList.map((productItem, index) => (
-                <ShoppingProductTile product={productItem} />
+                <ShoppingProductTile 
+                  product={productItem} 
+                  handleGetProductDetails={handleGetProductDetails} 
+                  handleAddToCart={handleAddToCart}
+                />
               ))
               : null}
           </div>
