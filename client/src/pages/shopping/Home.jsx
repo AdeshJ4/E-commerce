@@ -11,6 +11,7 @@ import ShoppingProductTile from '@/components/shopping/product-tile';
 import { useNavigate } from 'react-router-dom';
 import { addToCart } from '@/store/slices/shop-slice/cart-slice';
 import { useToast } from '@/hooks/use-toast';
+import ProductDetailsDialog from '@/components/shopping/product-details';
 
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: ShirtIcon },
@@ -34,11 +35,13 @@ const slides = [bannerOne, bannerTwo, bannerThree];
 
 const ShoppingHome = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const dispatch = useDispatch();
   const { productList, productDetails } = useSelector(state => state.shopProducts);
   const navigate = useNavigate()
   const { user } = useSelector(state => state.auth);
   const { toast } = useToast();
+
 
 
   console.log('productList, productDetails', productList, productDetails);
@@ -75,32 +78,39 @@ const ShoppingHome = () => {
     navigate(`/shop/listing`)
   }
 
-  function handleGetProductDetails (getCurrentProductId) {
+  function handleGetProductDetails(getCurrentProductId) {
     dispatch(fetchProductDetails(getCurrentProductId))
   }
 
-    
+  useEffect(() => {
+    if (productDetails !== null) {
+      setOpenDetailsDialog(true);
+    }
+  }, [productDetails])
+
+
   const handleAddToCart = (getCurrentProductId) => {
     dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
-    .then((data) => {
+      .then((data) => {
 
-      console.log('data', data);
-      
+        console.log('data', data);
+
         if (data?.payload?.success) {
-            toast({
-                title: data?.payload?.message
-            });
+          toast({
+            title: data?.payload?.message
+          });
         } else {
-            toast({
-                title: data?.payload?.message || 'Failed to add item to cart',
-                variant: 'destructive'
-            });
+          toast({
+            title: data?.payload?.message || 'Failed to add item to cart',
+            variant: 'destructive'
+          });
         }
-    })
+      })
   };
 
   return (
     <div className="flex flex-col min-h-screen">
+      {/* Images Slider */}
       <div className="relative w-full h-[625px] overflow-hidden">
         {slides.map((slide, index) => (
           <img
@@ -190,9 +200,9 @@ const ShoppingHome = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {productList && productList.length > 0
               ? productList.map((productItem, index) => (
-                <ShoppingProductTile 
-                  product={productItem} 
-                  handleGetProductDetails={handleGetProductDetails} 
+                <ShoppingProductTile
+                  product={productItem}
+                  handleGetProductDetails={handleGetProductDetails}
                   handleAddToCart={handleAddToCart}
                 />
               ))
@@ -200,6 +210,15 @@ const ShoppingHome = () => {
           </div>
         </div>
       </section>
+
+
+      <ProductDetailsDialog
+        open={openDetailsDialog}
+        setOpen={setOpenDetailsDialog}
+        product={productDetails}
+      />
+
+
     </div>
   );
 }
