@@ -59,12 +59,15 @@ const UserCartItemsContent = ({ cartItem }) => {
 
   if (isLoadingUpdate || isLoadingDelete) return <Spinner />;
 
-
   return (
-    <div className='flex  items-center space-x-4'>
+    <div className='flex items-center space-x-4 px-5 py-3 rounded-lg border border-gray-300 bg-white'>
       <img src={cartItem?.image} alt={cartItem?.title} className='w-20 h-20 rounded object-cover' />
       <div className='flex-1'>
-        <h3 className='font-extrabold'>{cartItem?.title}</h3>
+        <div className='flex justify-between'>
+          <h3 className='font-extrabold'>{cartItem?.title}</h3>
+          <Trash onClick={handleDeleteCartItem} className='cursor-pointer mt-1' size={20} />
+        </div>
+
         <div className='flex items-center mt-1 gap-2'>
           <Button onClick={() => handleUpdateQuantity("minus")} disabled={cartItem?.quantity === 1} variant="outline" size="icon" className="h-8 w-8 rounded-full">
             <Minus className='w-4 h-4' />
@@ -77,11 +80,11 @@ const UserCartItemsContent = ({ cartItem }) => {
           </Button>
         </div>
 
-        <div className='flex flex-col items-end'>
-          <p className='font-semibold'>${((cartItem?.salePrice > 0 ? cartItem?.salePrice : cartItem?.price) * cartItem?.quantity).toFixed(2)}</p>
-          <Trash onClick={handleDeleteCartItem} className='cursor-pointer mt-1' size={20} />
+        <div className="relative">
+          <p className="absolute right-0 bottom-1">
+            ${((cartItem?.salePrice > 0 ? cartItem?.salePrice : cartItem?.price) * cartItem?.quantity).toFixed(2)}
+          </p>
         </div>
-
       </div>
     </div>
   )
