@@ -204,6 +204,7 @@ const ShoppingHome = () => {
                   product={productItem}
                   handleGetProductDetails={handleGetProductDetails}
                   handleAddToCart={handleAddToCart}
+                  key={index}
                 />
               ))
               : null}

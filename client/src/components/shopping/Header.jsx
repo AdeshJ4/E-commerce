@@ -8,7 +8,7 @@ import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '../ui/avatar';
 import { logoutUser } from '@/store/slices/auth-slice';
-import UserCartWrapper from './cart-wrapper';
+import UserCartWrapper from './CartWrapper';
 import { fetchCartItems } from '@/store/slices/shop-slice/cart-slice';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from '../ui/label';
