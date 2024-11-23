@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import { SheetContent, SheetHeader, SheetTitle } from '../ui/sheet'
 import { Button } from '../ui/button'
 import UserCartItemsContent from './cart-items-content';
+import { useNavigate } from 'react-router-dom';
 
 const UserCartWrapper = ({ cartItems }) => {
+
+  const navigate = useNavigate();
 
   const totalCartAmount =
     cartItems.length > 0
@@ -38,7 +41,7 @@ const UserCartWrapper = ({ cartItems }) => {
         </div>
       </div>
 
-      <Button className="w-full mt-6">Checkout</Button>
+      <Button className="w-full mt-6" onClick={() => navigate("/shop/checkout")}>Checkout</Button>
     </SheetContent>
   );
 }

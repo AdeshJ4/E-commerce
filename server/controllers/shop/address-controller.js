@@ -14,8 +14,8 @@ const addAddress = async (req, res) => {
     }
 
     const newAddress = new Address({
-      userId, address, city, notes, phone
-    })
+      userId, address, city, pincode, phone, notes
+    });
 
     await newAddress.save();
 
@@ -25,7 +25,7 @@ const addAddress = async (req, res) => {
       status: 201,
       data: newAddress,
       success: true,
-      message: "Cart fetch successfully",
+      message: "New Address Added Successfully",
     })
   } catch (err) {
     return handleResponse({ res, status: 500, message: err.message, success: false });
@@ -51,7 +51,7 @@ const editAddress = async (req, res) => {
 
     if(!address) return handleResponse({ res, status: 404, message: "Address not found for this Id", success: false});
 
-    return handleResponse({ res, status: 201, data: address, success: true});
+    return handleResponse({ res, status: 201, data: address, success: true, message: "Address Edited"});
 
   } catch (err) {
     return handleResponse({ res, status: 500, message: err.message, success: false });
