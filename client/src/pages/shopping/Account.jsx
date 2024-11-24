@@ -1,8 +1,8 @@
 import React from "react";
 import accImg from "../../assets/account.jpg";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import Orders from "@/components/shopping/orders";
 import Addresses from "@/components/shopping/Addresses";
+import ShoppingOrders from "@/components/shopping/Orders";
 
 
 const ShoppingAccount = () => {
@@ -15,14 +15,14 @@ const ShoppingAccount = () => {
         />
       </div>
 
-      <div className="container mx-auto grid grid-cols-1 gap-8 py-8">
+      <div className="mx-auto grid grid-cols-1 gap-8 py-8">
         <div className="flex flex-col rounded-lg border bg-background p-6 shadow-sm">
-          <Tabs defaultValue="orders">
+          <Tabs defaultValue="orders" className="flex  items-center justify-center flex-col">
             <TabsList>
               <TabsTrigger value="orders">Orders</TabsTrigger>
               <TabsTrigger value="address">Address</TabsTrigger>
             </TabsList>
-            <TabsContent value="orders"><Orders /></TabsContent>
+            <TabsContent value="orders"><ShoppingOrders /></TabsContent>
             <TabsContent value="address"><Addresses /></TabsContent>
           </Tabs>
         </div>

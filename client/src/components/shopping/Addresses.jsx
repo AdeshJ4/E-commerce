@@ -30,10 +30,10 @@ const Addresses = () => {
     const handleManageAddress = (event) => {
         event.preventDefault();
 
-        if(addressList.length >= 3 && currentEditId === null){
+        if(addressList.length >= 2 && currentEditId === null){
             setFormData(initialFormData);
             toast({
-                title: "You can add max 3 addresses",
+                title: "You can add max 2 addresses",
                 variant: "destructive",
             });
 
@@ -113,35 +113,40 @@ const Addresses = () => {
     };
 
     return (
-        <Card>
-            <div className="mb-3 p-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-                {addressList && addressList.length > 0
-                    ? addressList.map((address) => (
-                        <AddressCard
-                            address={address}
-                            handleDeleteAddress={handleDeleteAddress}
-                            key={address._id}
-                            handleEditAddress={handleEditAddress}
-                        />
-                    ))
-                    : null}
-            </div>
+        <div className="flex min-h-screen bg-gray-100">
+            <Card className="w-full max-w-4xl px-6 shadow-lg rounded-lg border border-gray-300 bg-white">
+                <div className="mb-3 p-3 grid grid-cols-1 sm:grid-cols-2  gap-2">
+                    {addressList && addressList.length > 0
+                        ? addressList.map((address) => (
+                            <AddressCard
+                                address={address}
+                                handleDeleteAddress={handleDeleteAddress}
+                                key={address._id}
+                                handleEditAddress={handleEditAddress}
+                            />
+                        ))
+                        : null}
+                </div>
 
-            <CardHeader>
-                <CardTitle>{currentEditId ? "Edit Address" : "Add New Address"}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-                <CommonForm
-                    formControls={addressFormControls}
-                    formData={formData}
-                    setFormData={setFormData}
-                    buttonText={currentEditId ? "Edit" : "Add"}
-                    onSubmit={handleManageAddress}
-                    isBtnDisabled={!isFormValid()}
-                />
-            </CardContent>
-        </Card>
+                <CardHeader>
+                    <CardTitle className="text-lg font-bold text-gray-800">
+                        {currentEditId ? "Edit Address" : "Add New Address"}
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    <CommonForm
+                        formControls={addressFormControls}
+                        formData={formData}
+                        setFormData={setFormData}
+                        buttonText={currentEditId ? "Edit" : "Add"}
+                        onSubmit={handleManageAddress}
+                        isBtnDisabled={!isFormValid()}
+                    />
+                </CardContent>
+            </Card>
+        </div>
     );
+
 };
 
 export default Addresses;

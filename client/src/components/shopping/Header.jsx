@@ -70,15 +70,26 @@ function HeaderRightContent() {
     setOpenCartSheet(false);
   }
 
+  console.log('cartItems oooo', cartItems);
+  
+
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       <Sheet open={openCartSheet} onOpenChange={openCartSheetHandler}>
-        <Button onClick={() => setOpenCartSheet(true)} variant="outline" size="icon">
+        <Button
+          onClick={() => setOpenCartSheet(true)}
+          variant="outline"
+          size="icon"
+        >
           <ShoppingCart className="w-6 h-6" />
           <span className="sr-only">User Cart</span>
         </Button>
 
-        <UserCartWrapper cartItems={cartItems} />
+        <UserCartWrapper
+          setOpenCartSheet={setOpenCartSheet}
+          cartItems={cartItems}
+        />
+
       </Sheet>
 
       <DropdownMenu>
@@ -98,7 +109,7 @@ function HeaderRightContent() {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
-            <LogOut className='mr-2 h-4 w-4' /> Logout
+            <LogOut className="mr-2 h-4 w-4" /> Logout
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
