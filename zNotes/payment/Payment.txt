@@ -1,0 +1,97 @@
+-> For Payment we are using Paypal for that you must have paypal account.
+
+-> You must have sandbox test account  for that you need access to the paypal developer dashboard.
+
+
+Keywords: 
+
+
+1. Developer Account & Sandbox Mode:
+Free: There are no charges to create a PayPal Developer account or use the sandbox for testing.
+Sandbox accounts allow you to simulate payments without real money being involved.
+
+
+2. Live Transactions (Real Environment):
+When you move to the live mode (i.e., real transactions), PayPal will charge transaction fees for every successful payment 
+processed through their gateway.
+Fees Structure (Example for India):
+Typically, PayPal charges around 2.9% + a fixed fee per transaction. The fixed fee varies depending on the currency.
+For international payments, there may be additional cross-border fees.
+These fees are charged to the merchant account (business account), meaning you as the seller will bear these costs.
+
+
+3. No Monthly or Setup Fees:
+PayPal does not charge monthly fees for maintaining a business account.
+You only pay fees when a transaction occurs in live mode.
+
+
+4. Free Until You Go Live:
+While in sandbox mode, you can test all functionalities without incurring any costs.
+
+
+5. PayPal Sandbox Test Environment: 
+The sandbox refers to the PayPal Sandbox Test Environment, where you can create test accounts (personal and business) to simulate 
+real-world transactions without involving actual money.
+
+Sandbox Accounts:
+When you create a PayPal Developer account, you can access the sandbox environment.
+You can set up two types of test accounts:
+Personal Account: Simulates a customer/buyer account.
+Business Account: Simulates a merchant/seller account.
+
+Test Transactions:
+You can use these accounts to test payments, refunds, disputes, subscriptions, etc., without any real financial impact.
+All interactions in the sandbox are purely virtual and for testing purposes.
+
+Sandbox Credentials:
+PayPal will provide you with sandbox API credentials (client ID and secret) that you can use in your application for testing 
+payment integrations.
+
+Switch to Live:
+When you're ready to process real transactions, you can replace the sandbox credentials with live API credentials.
+
+===============================================================================================================================
+
+
+Creating a developer account on PayPal Developer is a straightforward process and is necessary for integrating PayPal's payment 
+gateway into your e-commerce application. Here's how you can do it step-by-step:
+
+
+Steps to Create a Developer Account on PayPal
+
+1. Go to PayPal Developer Portal
+Visit "developer.paypal.com"
+
+2.Sign Up or Log In:
+New Users:
+Click on Sign Up.
+Choose the Business Account option (necessary for integrating payments).
+Fill in your details (email, password, business name, etc.).
+Existing Users:
+If you already have a PayPal account, click on Log In and use your existing credentials.
+
+3. Verify Your Email Address:
+After signing up, PayPal will send a verification email to the address you used. Open the email and click the verification link.
+
+4.Access the Dashboard:
+Once logged in, you’ll be redirected to the PayPal Developer Dashboard.
+
+5.Create a Sandbox Account:
+In the developer dashboard, go to the Sandbox > Accounts section (https://developer.paypal.com/dashboard/accounts)
+Here, create two types of sandbox accounts:
+Business Account: Simulates the merchant (your e-commerce store). 
+Personal Account: Simulates the buyer (customer).
+
+
+6.Obtain Client ID and Secret:
+Go to My Apps & Credentials in the dashboard.
+Under the REST API apps section, click Create App.
+Name your app (e.g., "E-commerce App") and choose the sandbox mode(choose merchant option there).
+PayPal will generate a Client ID and Secret Key for you.
+
+7. Integrate into Your Application:
+Use the Client ID and Secret Key to configure PayPal in your e-commerce app.
+Follow PayPal's SDK or API documentation to implement the payment flow (e.g., REST API or PayPal Buttons).
+
+
+8. install this package inside server : npm i paypal-rest-sdk
