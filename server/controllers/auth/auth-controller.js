@@ -24,7 +24,12 @@ const registerUser = async (req, res) => {
     }
 }
 
-// login
+
+/*
+    1. @desc : Login
+    2. @route GET : /api/shop/cart/get/:userId
+    3. @access public
+*/
 const loginUser = async (req, res) => {
     try{
         const { email, password } = req.body;
