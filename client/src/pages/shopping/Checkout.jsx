@@ -16,13 +16,9 @@ const ShoppingCheckout = () => {
 
   const dispatch = useDispatch();
 
-  console.log('cartItems' , cartItems);
-  
-
-
   const totalCartAmount =
-    cartItems.length > 0
-      ? cartItems.reduce(
+    cartItems?.items?.length > 0
+      ? cartItems?.items?.reduce(
           (sum, currentItem) =>
             sum +
             (currentItem?.salePrice > 0
@@ -38,7 +34,7 @@ const ShoppingCheckout = () => {
     const orderData = {
       userId: user?.id,
       cartId: cartItems._id,
-      cartItems: cartItems.map(cart => ({ 
+      cartItems: cartItems?.items?.map(cart => ({ 
         productId: cart?.productId,
         title: cart?.title,
         image: cart?.image,
@@ -91,7 +87,7 @@ const ShoppingCheckout = () => {
         <Addresses setCurrentSelectedAddress={setCurrentSelectedAddress}/>
         {/* Cart Items */}
         <div className='flex flex-col gap-4 px-8 py-3 shadow-lg rounded-lg border border-gray-300 bg-white'>
-          {cartItems.map(cartItem => <UserCartItemsContent cartItem={cartItem} />)}
+          {cartItems?.items?.map((cartItem, index) => <UserCartItemsContent cartItem={cartItem} key={index}/>)}
           <div className="mt-8 space-y-4">
             <div className="flex justify-between">
               <span className="font-bold">Total</span>

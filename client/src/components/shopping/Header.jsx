@@ -17,11 +17,6 @@ function MenuItems() {
   const navigate = useNavigate();
 
   function handleNavigate(getCurrentMenuItem) {
-
-    console.log(' I am here ');
-
-    console.log('getCurrentMenuItem', getCurrentMenuItem);
-
     sessionStorage.removeItem("filters");
     const currentFilter = getCurrentMenuItem.id !== 'home' ? {
       category: [getCurrentMenuItem.id],
@@ -70,8 +65,7 @@ function HeaderRightContent() {
     setOpenCartSheet(false);
   }
 
-  console.log('cartItems oooo', cartItems);
-  
+  console.log('HeaderRightContent cartItems', cartItems);
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">

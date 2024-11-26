@@ -7,10 +7,12 @@ import { useNavigate } from 'react-router-dom';
 
 const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
   const navigate = useNavigate();
+  console.log('UserCartWrapper cartItems', cartItems);
+  
 
   const totalCartAmount =
-    cartItems.length > 0
-      ? cartItems.reduce(
+    cartItems?.items?.length > 0
+      ? cartItems?.items?.reduce(
         (sum, currentItem) =>
           sum +
           (currentItem?.salePrice > 0 ? currentItem?.salePrice : currentItem?.price) *
@@ -32,8 +34,8 @@ const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
         <SheetTitle>Your Cart</SheetTitle>
       </SheetHeader>
       <div className="mt-8 space-y-4">
-        {cartItems && cartItems.length > 0
-          ? cartItems.map((item, index) => (
+        {cartItems && cartItems?.items?.length > 0
+          ? cartItems.items.map((item, index) => (
             <UserCartItemsContent cartItem={item} key={index} />
           ))
           : null}
@@ -52,18 +54,27 @@ const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
 
 
 UserCartWrapper.propTypes = {
-  cartItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      productId: PropTypes.string,
-      image: PropTypes.string,
-      title: PropTypes.string,
-      price: PropTypes.number,
-      salePrice: PropTypes.number,
-      totalStock: PropTypes.number,
-      quantity: PropTypes.number,
-    })
-  )
+  cartItems: PropTypes.shape({
+    _id: PropTypes.string,
+    userId: PropTypes.string,
+    items: PropTypes.arrayOf(
+      PropTypes.shape({
+        productId: PropTypes.string,
+        image: PropTypes.string,
+        title: PropTypes.string,
+        price: PropTypes.number,
+        salePrice: PropTypes.number,
+        totalStock: PropTypes.number,
+        quantity: PropTypes.number,
+      })
+    ),
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
+    __v: PropTypes.number,
+  }),
+  setOpenCartSheet: PropTypes.func,
 };
+
 
 
 
