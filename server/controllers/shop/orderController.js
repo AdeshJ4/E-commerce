@@ -2,11 +2,16 @@ const paypal = require('../../helpers/paypal');
 const handleResponse = require("../../utils/handleResponse")
 const Order = require('../../models/Order');
 
-
+/*
+    1. @desc : Create Order
+    2. @route POST : api/shop/order/create
+    3. @access public
+*/
 const createOrder = async (req, res) => {
     try {
         const {
             userId,
+            cartId,
             cartItems,
             addressInfo,
             orderStatus,
@@ -58,6 +63,7 @@ const createOrder = async (req, res) => {
             } else {
                 const order = new Order({
                     userId,
+                    cartId,
                     cartItems,
                     addressInfo,
                     orderStatus,
@@ -78,8 +84,7 @@ const createOrder = async (req, res) => {
                     success: true,
                     approvalURL,
                     orderId:  order._id
-                })
-                
+                })                
             }
         });
 
@@ -90,6 +95,12 @@ const createOrder = async (req, res) => {
 }
 
 
+
+/*
+    1. @desc : capture Order
+    2. @route POST : api/shop/order/create
+    3. @access public
+*/
 const captureOrder = async (req, res) => {
     try {
 

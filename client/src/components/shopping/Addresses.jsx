@@ -20,7 +20,7 @@ const initialFormData = {
     notes: "",
 };
 
-const Addresses = () => {
+const Addresses = ({ setCurrentSelectedAddress }) => {
     const [formData, setFormData] = useState(initialFormData);
     const { user } = useSelector((state) => state.auth);
     const { addressList } = useSelector((state) => state.shopAddress);
@@ -111,10 +111,11 @@ const Addresses = () => {
             dispatch(fetchAllAddresses(user?.id));
         });
     };
+    
 
     return (
         <div className="flex min-h-screen bg-gray-100">
-            <Card className="w-full max-w-4xl px-6 shadow-lg rounded-lg border border-gray-300 bg-white">
+            <Card className="w-full max-w-4xl px-6 shadow-lg rounded-lg border border-gray-300 bg-white md:w-[700px] lg:w-[1000px] ">
                 <div className="mb-3 p-3 grid grid-cols-1 sm:grid-cols-2  gap-2">
                     {addressList && addressList.length > 0
                         ? addressList.map((address) => (
@@ -123,6 +124,7 @@ const Addresses = () => {
                                 handleDeleteAddress={handleDeleteAddress}
                                 key={address._id}
                                 handleEditAddress={handleEditAddress}
+                                setCurrentSelectedAddress={setCurrentSelectedAddress}
                             />
                         ))
                         : null}

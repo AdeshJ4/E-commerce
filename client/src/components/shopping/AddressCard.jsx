@@ -4,9 +4,9 @@ import { Label } from "../ui/label";
 import PropTypes from "prop-types";
 import { Button } from "../ui/button";
 
-const AddressCard = ({ address, handleDeleteAddress, handleEditAddress }) => {
+const AddressCard = ({ address, handleDeleteAddress, handleEditAddress, setCurrentSelectedAddress }) => {
   return (
-    <Card className="h-full flex flex-col border border-gray-300 shadow-lg hover:shadow-xl transition-shadow rounded-lg bg-white">
+    <Card onClick={setCurrentSelectedAddress ? () => setCurrentSelectedAddress(address) : null} className="h-full flex flex-col border border-gray-300 shadow-lg hover:shadow-xl transition-shadow rounded-lg bg-white">
       <CardContent className="grid gap-2 p-4 flex-1">
         <Label className="font-semibold text-gray-600 text-sm">
           Address: <span className="font-normal text-gray-800">{address?.address}</span>

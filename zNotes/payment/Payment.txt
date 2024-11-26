@@ -95,3 +95,13 @@ Follow PayPal's SDK or API documentation to implement the payment flow (e.g., RE
 
 
 8. install this package inside server : npm i paypal-rest-sdk
+
+
+
+
+
+
+
+
+Log in for dummy personal account : https://sandbox.paypal.com/signin
+Note : E-commerce application have US business account so you have to login Us personal account.
