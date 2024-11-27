@@ -80,7 +80,6 @@ const Addresses = ({ setCurrentSelectedAddress }) => {
         dispatch(fetchAllAddresses(user?.id));
     }, [dispatch]);
 
-    console.log("addressList", addressList);
 
     const handleEditAddress = (getCurrentAddress) => {
         setCurrentEditId(getCurrentAddress?._id);

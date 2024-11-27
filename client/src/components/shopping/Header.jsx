@@ -65,7 +65,6 @@ function HeaderRightContent() {
     setOpenCartSheet(false);
   }
 
-  console.log('HeaderRightContent cartItems', cartItems);
 
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">

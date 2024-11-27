@@ -20,6 +20,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { checkAuth } from './store/slices/auth-slice';
 import { Skeleton } from "@/components/ui/skeleton"
 import PaypalReturnPage from './pages/shopping/PaypalReturn';
+import PaymentSuccess from './pages/shopping/PaymentSuccess.jsx';
+import PaymentFail from './pages/shopping/PaymentFail';
 
 
 const App = () => {
@@ -76,6 +78,8 @@ const App = () => {
           <Route path='checkout' element={<ShoppingCheckout />} />
           <Route path='account' element={<ShoppingAccount />} />
           <Route path='paypal-return' element={<PaypalReturnPage />} />
+          <Route path='payment-success' element={<PaymentSuccess />} />
+          <Route path='paypal-cancel' element={<PaymentFail />} />
         </Route>
 
         <Route path='/unauth-page' element={<UnAuth />} />

@@ -6,9 +6,7 @@ import UserCartItemsContent from './UserCartItemsContent';
 import { useNavigate } from 'react-router-dom';
 
 const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
-  const navigate = useNavigate();
-  console.log('UserCartWrapper cartItems', cartItems);
-  
+  const navigate = useNavigate(); 
 
   const totalCartAmount =
     cartItems?.items?.length > 0

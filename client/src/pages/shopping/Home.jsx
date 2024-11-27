@@ -43,10 +43,6 @@ const ShoppingHome = () => {
   const { toast } = useToast();
 
 
-
-  console.log('productList, productDetails', productList, productDetails);
-
-
   const handleLeftSlide = () => {
     setCurrentSlide(prevSlide => (prevSlide - 1 + slides.length) % slides.length)
   };

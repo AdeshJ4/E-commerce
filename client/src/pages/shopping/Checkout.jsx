@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import UserCartItemsContent from '@/components/shopping/UserCartItemsContent';
 import { Button } from '@/components/ui/button';
 import { createNewOrder } from '@/store/slices/shop-slice/order-slice';
+import { useToast } from '@/hooks/use-toast';
 
 const ShoppingCheckout = () => {
 
@@ -13,6 +14,7 @@ const ShoppingCheckout = () => {
   const { approvalURL } = useSelector(state => state.shopOrder)  
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null); 
   const [isPaymentStart, setIsPaymentStart] = useState(false);
+  const {toast} = useToast();
 
   const dispatch = useDispatch();
 
@@ -29,11 +31,30 @@ const ShoppingCheckout = () => {
         )
       : 0;
 
-
   const handleInitiatePaypalPayment = () => {
+    
+    if(cartItems?.items?.length === 0 || cartItems?.items?.length === undefined){
+      toast({
+        title: "Cart is Empty, add at least one item",
+        variant: "destructive"
+      })
+
+      return;
+    }
+
+    if(currentSelectedAddress === null){      
+      toast({
+        title: "Please Select Address",
+        variant: "destructive"
+      })
+      
+      return;
+    }
+
+
     const orderData = {
       userId: user?.id,
-      cartId: cartItems._id,
+      cartId: cartItems?._id,
       cartItems: cartItems?.items?.map(cart => ({ 
         productId: cart?.productId,
         title: cart?.title,
@@ -59,7 +80,6 @@ const ShoppingCheckout = () => {
       payerId: '',
     }
 
-    console.log('order Data ', orderData);
     dispatch(createNewOrder(orderData)).then((data) => {
       if(data?.payload?.success){
         setIsPaymentStart(true);
@@ -71,21 +91,20 @@ const ShoppingCheckout = () => {
 
 
   if(approvalURL) {
+    console.log('approvalURL', approvalURL);
     window.location.href = approvalURL;
   }
 
   return (
     <div className='flex flex-col'>
-      {/* image */}
       <div className='relative h-[300px] w-full overflow-hidden'>
         <img src={img} className='h-full w-full object-cover object-center' />
       </div>
 
-      {/* Address */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5 p-5">
-        {/* Address Component */}
+    
         <Addresses setCurrentSelectedAddress={setCurrentSelectedAddress}/>
-        {/* Cart Items */}
+    
         <div className='flex flex-col gap-4 px-8 py-3 shadow-lg rounded-lg border border-gray-300 bg-white'>
           {cartItems?.items?.map((cartItem, index) => <UserCartItemsContent cartItem={cartItem} key={index}/>)}
           <div className="mt-8 space-y-4">
@@ -98,18 +117,10 @@ const ShoppingCheckout = () => {
             <Button onClick={handleInitiatePaypalPayment} className='mt-4 w-full'>Checkout with Paypal</Button>
           </div>
         </div>
+        
       </div>
     </div>
   )
 }
 
 export default ShoppingCheckout
-
-
-
-/*
-
-for the first time when you click on Checkout button we have to set some data to static.
-
-
-*/

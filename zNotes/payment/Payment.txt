@@ -102,6 +102,10 @@ Follow PayPal's SDK or API documentation to implement the payment flow (e.g., RE
 
 
 
-
+https://developer.paypal.com/dashboard/accounts
 Log in for dummy personal account : https://sandbox.paypal.com/signin
 Note : E-commerce application have US business account so you have to login Us personal account.
+
+
+personal : sb-y56cp34329439@personal.example.com    )qOI[[*2
+business: sb-drcqc34334713@business.example.com   Mh{2*6KG

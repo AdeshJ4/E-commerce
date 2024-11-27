@@ -2,7 +2,7 @@ import React from "react";
 import accImg from "../../assets/account.jpg";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Addresses from "@/components/shopping/Addresses";
-import ShoppingOrders from "@/components/shopping/Orders";
+import ShoppingOrders from "@/components/shopping/ShoppingOrders";
 
 
 const ShoppingAccount = () => {
