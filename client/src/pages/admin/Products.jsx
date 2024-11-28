@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { addProductsFormElements } from '@/config';
 import { useToast } from '@/hooks/use-toast';
-import { addNewProduct, deleteProduct, editProduct, fetchAllFilteredProducts } from '@/store/slices/admin-slice/index';
+import { addNewProduct, deleteProduct, editProduct, fetchAllFilteredProducts } from '@/store/slices/admin-slice/products-slice/index';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 

@@ -15,7 +15,7 @@ orderRouter.post('/capture', capturePayment);
 orderRouter.get('/list/:userId', getAllOrders);
 
 
-// /api/shop/order/details/:id
-orderRouter.get('/details/:id', getOrderDetails);
+// /api/shop/order/details/:orderId
+orderRouter.get('/details/:orderId', getOrderDetails);
 
 module.exports = orderRouter;

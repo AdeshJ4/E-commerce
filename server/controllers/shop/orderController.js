@@ -56,10 +56,7 @@ const createOrder = async (req, res) => {
         }
 
         paypal.payment.create(create_payment_json, async (error, paymentInfo) => {
-
             if (error) {
-                console.log('Error paypal payment ', error);
-                // error while creating paypal payment
                 return handleResponse({ res, status: 500, message: error.message, success: false })
             } else {
                 const order = new Order({
@@ -77,7 +74,6 @@ const createOrder = async (req, res) => {
                     payerId,
                 });
                 await order.save();
-
 
                 const approvalURL = paymentInfo.links.find(link => link.rel === 'approval_url').href;
 
@@ -175,13 +171,25 @@ const getAllOrders = async ( req, res ) => {
 
 /*
     1. @desc : get Order Details
-    2. @route POST : api/shop/order/details/:id
+    2. @route POST : /api/shop/order/details/:orderId
     3. @access public
 */
 const getOrderDetails = async ( req, res ) => {
     try{
-        const { id } = req.params;
-        const order = await Order.findById(id);
+        const { orderId } = req.params;
+                 if (!orderId) {
+                    return handleResponse({
+                        res,
+                        status: 400,
+                        message: 'Missing required field: orderId',
+                        success: false
+                    });
+                }
+
+        console.log('orderId', orderId);
+        
+        const order = await Order.findById(orderId);
+        console.log('order from getOrderDetails', order);
         if(!order) return handleResponse({ res, success: false, message: "No Order found", status: 404});
 
         return handleResponse({ res, data: order, message: "Order fetch successfully", status: 200, success: true})

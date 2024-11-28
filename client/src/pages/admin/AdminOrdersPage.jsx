@@ -1,5 +1,5 @@
 import React from 'react'
-import AdminOrdersView from '../../components/admin/Orders';
+import AdminOrdersView from '../../components/admin/AdminOrdersView.jsx';
 
 const AdminOrders = () => {
   return (

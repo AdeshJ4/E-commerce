@@ -1,13 +1,25 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Dialog } from '../ui/dialog';
 import AdminOrderDetailsView from './AdminDetails';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllOrdersForAdmin } from '@/store/slices/admin-slice/order-slice';
 
 const AdminOrdersView = () => {
 
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
+  const { orderDetails, orderList } = useSelector(state => state.adminOrder);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllOrdersForAdmin());
+  }, [dispatch]);
+
+  console.log('Admin orderList', orderList);
+  
 
   return (
     <div className="flex min-h-screen bg-gray-100">

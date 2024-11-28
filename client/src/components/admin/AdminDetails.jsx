@@ -13,7 +13,6 @@ const AdminOrderDetailsView = () => {
 
   const handleUpdateStatus = (event) => {
     event.preventDefault();
-    // Handle status update logic
   };
 
   return (

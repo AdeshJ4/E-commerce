@@ -6,7 +6,7 @@ import AuthRegister from './pages/auth/register';
 import AdminLayout from './components/admin/layout';
 import AdminDashBoard from './pages/admin/DashBoard';
 import AdminProducts from './pages/admin/Products';
-import AdminOrders from './pages/admin/Orders';
+import AdminOrders from './pages/admin/AdminOrdersPage';
 import AdminFeatures from './pages/admin/Features';
 import ShoppingLayout from './components/shopping/layout';
 import NotFound from './pages/not-found';
