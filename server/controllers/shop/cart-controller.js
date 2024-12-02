@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Cart = require("../../models/Cart");
 const Product = require("../../models/Product");
 const User = require("../../models/User");
@@ -19,6 +20,10 @@ const addToCart = async (req, res) => {
         success: false,
         message: "Invalid data provided",
       });
+
+    if(!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(productId)){
+      return handleResponse({ res, status: 400, message: "Invalid ObjectId", success: false });
+    }
 
     //  check user & product exists in DB or not
     const user = await User.findById(userId);
@@ -100,6 +105,9 @@ const fetchCartItems = async (req, res) => {
         success: false,
       });
 
+      if(!mongoose.Types.ObjectId.isValid(userId))
+        return handleResponse({ res, status: 400, message: "UserId is not valid", success: false});
+
     // check user exists in DB or not
     const user = await User.findById(userId);
     
@@ -119,8 +127,6 @@ const fetchCartItems = async (req, res) => {
       path: "items.productId",
       select: "image title price salePrice totalStock",
     });
-
-
 
 
     if (!cart || cart.items.length === 0)
@@ -225,9 +231,6 @@ const updateCartItemsQty = async (req, res) => {
     }
 
     cart.items[findCurrentProductIndex].quantity = quantity;
-
-
-    console.log('cart.items[findCurrentProductIndex]', cart.items[findCurrentProductIndex]);
 
     await cart.save();
 

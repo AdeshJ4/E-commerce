@@ -32,10 +32,6 @@ const UserCartItemsContent = ({ cartItem }) => {
   }
 
   const handleUpdateQuantity = (value) => {
-    console.log('value', value);
-    console.log('cartItem?.quantity', cartItem?.quantity);
-
-
     dispatch(
       updateCartItems({
         userId: user?.id,

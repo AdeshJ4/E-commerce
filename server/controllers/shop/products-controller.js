@@ -59,7 +59,6 @@ const getFilteredProducts = async (req, res) => {
 const getProductDetailsById = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log('req.params', req.params);
 
     const product = await Product.findById(id);
     if (!product) return handleResponse({ res, status: 404, success: false, message: `The product with given id ${id} not found` });

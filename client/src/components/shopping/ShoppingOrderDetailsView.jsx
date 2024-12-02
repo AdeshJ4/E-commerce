@@ -1,10 +1,11 @@
 import React, { memo } from "react";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { Label } from "../ui/label";
-import { Separator } from "../ui/separator";
 import PropTypes from "prop-types";
-import { Badge } from "../ui/badge";
 import { useSelector } from "react-redux";
+import StatusBadge from "../common/StatusBadge";
+
+
 
 const ShoppingOrderDetailsView = ({ order }) => {
 
@@ -27,9 +28,7 @@ const ShoppingOrderDetailsView = ({ order }) => {
                             </div>
                             <div className="flex items-center justify-between">
                                 <p className="font-medium text-gray-600">Order Status</p>
-                                <Badge className={`px-2 py-1 text-xs font-medium text-white rounded ${order?.orderStatus === "confirmed" ? "bg-green-500" : "bg-[#FFC107]"}`} >
-                                    {order?.orderStatus}
-                                </Badge>
+                                <StatusBadge orderStatus={order?.orderStatus} />
                             </div>
                             <div className="flex items-center justify-between">
                                 <p className="font-medium text-gray-600">Order Price</p>

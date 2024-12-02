@@ -33,44 +33,8 @@ const addProduct = async (req, res) => {
     });
   }
 };
-// const addProduct = async (req, res) => {
-//   try {
-//     const {
-//       image,
-//       title,
-//       description,
-//       category,
-//       brand,
-//       price,
-//       salePrice,
-//       totalStock,
-//     } = req.body;
 
-//     const product = new Product({
-//       image,
-//       title,
-//       description,
-//       category,
-//       brand,
-//       price,
-//       salePrice,
-//       totalStock,
-//     });
 
-//     await product.save();
-
-//     return res.status(201).json({
-//       success: true,
-//       data: product,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({
-//       success: false,
-//       message: "Error Occured",
-//     });
-//   }
-// };
 
 const fetchAllFilteredProducts = async (req, res) => {
   try {
@@ -119,46 +83,6 @@ const editProduct = async (req, res) => {
     });
   }
 };
-// const editProduct = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const {
-//       image,
-//       title,
-//       description,
-//       category,
-//       brand,
-//       price,
-//       salePrice,
-//       totalStock,
-//     } = req.body;
-
-//     const product = await Product.findById(id);
-//     if (!product)
-//       return res.status(404).json({
-//         success: false,
-//         message: "Product not found",
-//       });
-
-//     product.image = image || product.image;
-//     product.title = title || product.title;
-//     product.description = description || product.description;
-//     product.category = category || product.category;
-//     product.brand = brand || product.brand;
-//     product.price = price || product.price;
-//     product.salePrice = salePrice || product.salePrice;
-//     product.totalStock = totalStock || product.totalStock;
-
-//     await product.save();
-
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).json({
-//       success: false,
-//       message: "Error Occured",
-//     });
-//   }
-// };
 
 const deleteProduct = async (req, res) => {
   try {

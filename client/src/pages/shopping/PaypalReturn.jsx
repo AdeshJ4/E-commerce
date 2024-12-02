@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 const PaypalReturnPage = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  const searchParams = new URLSearchParams(location.search); // ?category=react&sort=asc
   
   const paymentId = searchParams.get('paymentId');
   const payerId = searchParams.get('PayerID');

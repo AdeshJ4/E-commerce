@@ -4,8 +4,7 @@ import { Label } from '../ui/label';
 import { Checkbox } from '../ui/checkbox';
 import { Separator } from '../ui/separator';
 
-const ProductFilter = ({filters, handleFilter}) => {
-  // console.log('filters ProductFIlter', filters);  // filters = {"category": [ "men","kids"], "brand": [ "levi", "puma" ]}
+const ProductFilter = ({filters, handleFilter}) => { // filters = {"category": [ "men","kids"], "brand": [ "levi", "puma" ]}
   
   return (
     <div className="bg-background rounded-lg shadow-sm">

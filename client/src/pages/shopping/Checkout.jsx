@@ -91,7 +91,6 @@ const ShoppingCheckout = () => {
 
 
   if(approvalURL) {
-    console.log('approvalURL', approvalURL);
     window.location.href = approvalURL;
   }
 

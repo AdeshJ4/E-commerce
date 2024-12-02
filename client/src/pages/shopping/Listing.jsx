@@ -18,12 +18,15 @@ const ShoppingListing = () => {
 
   const dispatch = useDispatch();
   const { productList, productDetails } = useSelector(state => state.shopProducts);
+  const { cartItems } = useSelector(state => state.shopCart);
   const { user } = useSelector(state => state.auth);
   const [filters, setFilters] = useState({});   // { "category": ["men", "women", "accessories"], "brand": ["nike", "adidas"] }
   const [sort, setSort] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();  
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);   
   const { toast } = useToast();
+
+  const categorySearchParams = searchParams.get('category');
 
   useEffect(() => {
     if (filters !== null && sort !== null) {
@@ -42,7 +45,7 @@ const ShoppingListing = () => {
   useEffect(()=>{
     setSort('price-lowtohigh'); 
     setFilters(JSON.parse(sessionStorage.getItem('filters')) || {})
-  }, [])
+  }, [categorySearchParams])
 
   useEffect(()=> {
     if(filters && Object.keys(filters).length > 0){      
@@ -63,22 +66,37 @@ const ShoppingListing = () => {
   }
 
   
-  const handleAddToCart = (getCurrentProductId) => {
+  const handleAddToCart = (getCurrentProductId, getCurrentProductTotalStock) => {
+    const getCartItems = cartItems?.items || [];
+    console.log('getCartItems', getCartItems);
+    
+    if(getCartItems.length){
+      const indexOfCurrentItem  = getCartItems.findIndex(item => item.productId === getCurrentProductId);
+
+      if(indexOfCurrentItem > -1){
+        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
+        if(getQuantity + 1 > getCurrentProductTotalStock){  // 6 > 5
+          toast({
+            title: `Only ${getQuantity} quantity can be added for this product`,
+            variant: "destructive" 
+          })
+        }
+      }
+      
+    }
+
     dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
     .then((data) => {
-
-      console.log('data', data);
-      
-        if (data?.payload?.success) {
-            toast({
-                title: data?.payload?.message
-            });
-        } else {
-            toast({
-                title: data?.payload?.message || 'Failed to add item to cart',
-                variant: 'destructive'
-            });
-        }
+      if (data?.payload?.success) {
+        toast({
+          title: data?.payload?.message
+        });
+      } else {
+        toast({
+          title: data?.payload?.message || 'Failed to add item to cart',
+          variant: 'destructive'
+        });
+      }
     })
   };
 

@@ -88,9 +88,6 @@ const ShoppingHome = () => {
   const handleAddToCart = (getCurrentProductId) => {
     dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
       .then((data) => {
-
-        console.log('data', data);
-
         if (data?.payload?.success) {
           toast({
             title: data?.payload?.message

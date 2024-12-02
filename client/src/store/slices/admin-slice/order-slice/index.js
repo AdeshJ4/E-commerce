@@ -1,48 +1,29 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+
 const initialState = {
-  approvalURL: null,
   isLoading: false,
-  orderId: null,
+  error: null,
   orderList: [],
-  orderDetails: null
+  orderDetails: null,
 }
 
 
-export const createNewOrder = createAsyncThunk("shop/order/createNewOrder", async (orderData, { rejectWithValue }) => {
+export const getAllOrdersForAdmin = createAsyncThunk("admin/order/getAllOrdersForAdmin", async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`http://localhost:5000/api/shop/order/create`, orderData);
+    const response = await axios.get(`http://localhost:5000/api/admin/order/get`);
     return response?.data;
   } catch (error) {
-    return rejectWithValue(error?.response?.data)
-  }
-})
-
-
-export const capturePayment = createAsyncThunk("shop/order/capturePayment", async ({ paymentId, payerId, orderId }, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`http://localhost:5000/api/shop/order/capture`, { paymentId, payerId, orderId });
-    return response?.data;
-  } catch (error) {
-    return rejectWithValue(error?.response?.data)
-  }
-})
-
-
-export const getAllOrders = createAsyncThunk("shop/order/getAllOrders", async (userId, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`http://localhost:5000/api/shop/order/list/${userId}`);
-    return response?.data;
-  } catch (error) {
+    console.error("Error in getAllOrdersForAdmin thunk:", error?.response); 
     return rejectWithValue(error?.response?.data);
   }
 })
 
 
-export const getOrderDetails = createAsyncThunk("shop/order/getOrderDetails", async (orderId, { rejectWithValue }) => {
+export const getOrderDetailsForAdmin = createAsyncThunk("admin/order/getOrderDetailsForAdmin", async (orderId, { rejectWithValue }) => {
   try {    
-    const response = await axios.get(`http://localhost:5000/api/shop/order/details/${orderId}`)
+    const response = await axios.get(`http://localhost:5000/api/admin/order/details/${orderId}`)
     return response?.data;
   } catch (error) {
     return rejectWithValue(error?.response?.data);
@@ -50,58 +31,69 @@ export const getOrderDetails = createAsyncThunk("shop/order/getOrderDetails", as
 })
 
 
-const shoppingOrderSlice = createSlice({
-  name: 'shoppingOrderSlice',
+export const updateOrderStatusForAdmin = createAsyncThunk("admin/order/updateOrderStatusForAdmin", async ({orderId, orderStatus}, { rejectWithValue }) => {
+  try {        
+    const response = await axios.put(`http://localhost:5000/api/admin/order/update/${orderId}`, { orderStatus })
+    return response?.data;
+  } catch (error) {
+    return rejectWithValue(error?.response?.data);
+  }
+})
+
+
+const adminOrderSlice = createSlice({
+  name: "adminOrderSlice", 
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+
     builder
-
-    // createNewOrder
-      .addCase(createNewOrder.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(createNewOrder.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.approvalURL = action?.payload?.approvalURL;
-        state.orderId = action?.payload?.orderId;
-        sessionStorage.setItem('currentOrderId', JSON.stringify(action?.payload?.orderId))
-      })
-      .addCase(createNewOrder.rejected, (state) => {
-        state.isLoading = false;
-        state.approvalURL = null;
-        state.orderId = null;
-      })
-
-
-      // getAllOrders
-      .addCase(getAllOrders.pending, (state) => {
+      // getAllOrdersForAdmin
+      .addCase(getAllOrdersForAdmin.pending, (state) => {
         state.isLoading = true;
+        state.error = null; // Clear previous errors
       })
-      .addCase(getAllOrders.fulfilled, (state, action) => {
+      .addCase(getAllOrdersForAdmin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.orderList = action?.payload?.data;
       })
-      .addCase(getAllOrders.rejected, (state, action) => {
+      .addCase(getAllOrdersForAdmin.rejected, (state, action) => {        
         state.isLoading = false;
         state.orderList = [];
+        state.error = action?.payload?.message || "Failed to fetch orders";
       })
 
 
-      // getOrderDetails
-      .addCase(getOrderDetails.pending, (state) => {
+      // getOrderDetailsForAdmin
+      .addCase(getOrderDetailsForAdmin.pending, (state) => {
         state.isLoading = true;
+        state.error = null; // Clear previous errors
       })
-      .addCase(getOrderDetails.fulfilled, (state, action) => {
+      .addCase(getOrderDetailsForAdmin.fulfilled, (state, action) => {
         state.isLoading = false;
         state.orderDetails = action?.payload?.data;
       })
-      .addCase(getOrderDetails.rejected, (state) => {
+      .addCase(getOrderDetailsForAdmin.rejected, (state, action) => {
         state.isLoading = false;
         state.orderDetails = null;
+        state.error = action?.payload?.message || "Failed to fetch orders";
       })
+
+
+      // updateOrderStatusForAdmin
+
+      // .addCase(updateOrderStatusForAdmin.pending, (state) => {
+      //   state.isLoading = true;
+      //   state.error = null;// Clear previous errors
+      // })
+      // .addCase(updateOrderStatusForAdmin.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.
+      // })
+
   }
+
 })
 
 
-export default shoppingOrderSlice.reducer;
+export default adminOrderSlice.reducer

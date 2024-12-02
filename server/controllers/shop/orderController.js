@@ -132,12 +132,10 @@ const capturePayment = async (req, res) => {
 
          // Find and clear the associated cart
          const cart = await Cart.findById(order.cartId);
-         console.log('Before cart', cart);
          
          if (cart) {
              cart.items = [];
              await cart.save(); // Save the updated cart
-             console.log('After cart', cart);
          } else {
              console.warn(`Cart with ID ${order.cartId} not found.`);
          }
@@ -185,11 +183,8 @@ const getOrderDetails = async ( req, res ) => {
                         success: false
                     });
                 }
-
-        console.log('orderId', orderId);
         
         const order = await Order.findById(orderId);
-        console.log('order from getOrderDetails', order);
         if(!order) return handleResponse({ res, success: false, message: "No Order found", status: 404});
 
         return handleResponse({ res, data: order, message: "Order fetch successfully", status: 200, success: true})

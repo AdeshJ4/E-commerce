@@ -20,8 +20,6 @@ export const registerUser = createAsyncThunk('/auth/register', async (formData, 
 });
 
 export const loginUser = createAsyncThunk('/auth/login', async (formData, { rejectWithValue }) => {
-  console.log('formData', formData);
-  
   try{
     const response = await axios.post('http://localhost:5000/api/auth/login', formData, {
      withCredentials: true

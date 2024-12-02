@@ -22,6 +22,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import PaypalReturnPage from './pages/shopping/PaypalReturn';
 import PaymentSuccess from './pages/shopping/PaymentSuccess.jsx';
 import PaymentFail from './pages/shopping/PaymentFail';
+import AdminOrdersView from './components/admin/AdminOrdersView';
 
 
 const App = () => {
@@ -62,7 +63,7 @@ const App = () => {
         }>
           <Route path='dashboard' element={<AdminDashBoard />} />
           <Route path='products' element={<AdminProducts />} />
-          <Route path='orders' element={<AdminOrders />} />
+          <Route path='orders' element={<AdminOrdersView />} />
           <Route path='features' element={<AdminFeatures />} />
         </Route>
 
