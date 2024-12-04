@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types';
 import { Dialog, DialogContent, DialogTitle } from '../ui/dialog'
 import { Button } from '../ui/button';
@@ -9,14 +9,41 @@ import { Input } from '../ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '@/store/slices/shop-slice/cart-slice';
 import { useToast } from '@/hooks/use-toast';
+import { Label } from '../ui/label';
+import StarRating from '../common/StarRating';
+import { addReview } from '@/store/slices/shop-slice/review-slice';
 
 const ProductDetailsDialog = ({ product, open, setOpen }) => {
+
+  const [reviewMsg, setReviewMsg] = useState("");
+  const [rating, setRating] = useState(0);
 
   const dispatch = useDispatch();
   const { toast } = useToast();
   const { user } = useSelector(state => state.auth)
+  const {cartItems} = useSelector(state => state.shopCart);
 
-  const handleAddToCart = (getCurrentProductId) => {
+  const handleAddToCart = (getCurrentProductId, getCurrentProductTotalStock) => {
+
+
+    const getCartItems = cartItems?.items || [];
+    
+    if(getCartItems.length){
+      const indexOfCurrentItem  = getCartItems.findIndex(item => item.productId === getCurrentProductId);
+
+      if(indexOfCurrentItem > -1){
+        const getQuantity = getCartItems[indexOfCurrentItem].quantity;
+        if(getQuantity + 1 > getCurrentProductTotalStock){  // 6 > 5
+          toast({
+            title: `Only ${getQuantity} quantity can be added for this product`,
+            variant: "destructive" 
+          });
+          return;
+        }
+      }
+    }
+
+
     dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
       .then((data) => {
         if (data?.payload?.success) {
@@ -34,7 +61,29 @@ const ProductDetailsDialog = ({ product, open, setOpen }) => {
 
   function handleDialogClose() {
     setOpen(false);
+    setRating(0);
+    setReviewMsg("")
   }
+
+  function handleRatingChange (getRating){
+    console.log('getRating', getRating);
+    
+    setRating(getRating)
+  }
+
+
+  const handleAddReview = () => {
+    dispatch(
+      addReview({
+        productId: product?._id,
+        userId: user?.id,
+        userName: user?.userName,
+        reviewMessage: reviewMsg,
+        reviewValue: rating,
+      })
+    );
+    handleDialogClose();
+  };
 
 
   return (
@@ -89,7 +138,7 @@ const ProductDetailsDialog = ({ product, open, setOpen }) => {
               </Button>
             ) : (
               <Button
-                onClick={() => handleAddToCart(product?._id)}
+                onClick={() => handleAddToCart(product?._id, product?.totalStock)}
                 className="w-full"
               >
                 Add to Cart
@@ -130,9 +179,13 @@ const ProductDetailsDialog = ({ product, open, setOpen }) => {
               </div>
             </div>
 
-            <div className="mt-6 flex gap-2">
-              <Input placeholder="Write a review..." />
-              <Button>Submit</Button>
+            <div className="mt-10 flex flex-col gap-2">
+              <Label>Write a review</Label>
+              <div className='flex'>
+                <StarRating rating={rating} handleRatingChange={handleRatingChange} />
+              </div>
+              <Input name="reviewMsg" value={reviewMsg} onChange={(e) => setReviewMsg(e.target.value)} placeholder="Write a review..." />
+              <Button onClick={handleAddReview} disabled={reviewMsg.trim() === ""}>Submit</Button> 
             </div>
           </div>
         </div>

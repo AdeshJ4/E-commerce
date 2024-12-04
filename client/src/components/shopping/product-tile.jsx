@@ -59,13 +59,9 @@ const ShoppingProductTile = ({ product, handleGetProductDetails, handleAddToCart
       </div>
       <CardFooter>
         {product?.totalStock === 0 ? (
-          <Button className="w-full opacity-65 cursor-not-allowed">
-            Out of Stock
-          </Button>
+          <Button className="w-full opacity-65 cursor-not-allowed"> Out of Stock </Button>
         ) : (
-          <Button onClick={() => handleAddToCart(product?._id, product?.totalStock)} className="w-full">
-            Add to Cart
-          </Button>
+          <Button onClick={() => handleAddToCart(product?._id, product?.totalStock)} className="w-full"> Add to Cart </Button>
         )}
       </CardFooter>
     </Card>
@@ -82,9 +78,9 @@ ShoppingProductTile.propTypes = {
     price: PropTypes.number,
     salePrice: PropTypes.number,
     totalStock: PropTypes.number,
-  }).isRequired,
-  handleGetProductDetails: PropTypes.func.isRequired,
-  handleAddToCart: PropTypes.func.isRequired,
+  }),
+  handleGetProductDetails: PropTypes.func,
+  handleAddToCart: PropTypes.func,
 };
 
 export default ShoppingProductTile;

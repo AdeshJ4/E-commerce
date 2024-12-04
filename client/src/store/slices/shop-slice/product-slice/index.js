@@ -76,5 +76,5 @@ const shopProductSlice = createSlice({
   },
 });
 
-export const { setProductDetails } = shopProductSlice.actions;
+// export const { setProductDetails } = shopProductSlice.actions;
 export default shopProductSlice.reducer;

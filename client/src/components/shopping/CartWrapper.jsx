@@ -12,12 +12,7 @@ const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
     cartItems?.items?.length > 0
       ? cartItems?.items?.reduce(
         (sum, currentItem) =>
-          sum +
-          (currentItem?.salePrice > 0 ? currentItem?.salePrice : currentItem?.price) *
-          currentItem?.quantity,
-        0 // Initial value for reduce
-      )
-      : 0;
+          sum + (currentItem?.salePrice > 0 ? currentItem?.salePrice : currentItem?.price) * currentItem?.quantity, 0) : 0;
 
 
   const handleNavigation = () => {

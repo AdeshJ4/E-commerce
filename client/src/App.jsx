@@ -23,6 +23,7 @@ import PaypalReturnPage from './pages/shopping/PaypalReturn';
 import PaymentSuccess from './pages/shopping/PaymentSuccess.jsx';
 import PaymentFail from './pages/shopping/PaymentFail';
 import AdminOrdersView from './components/admin/AdminOrdersView';
+import SearchProducts from './pages/shopping/SearchProducts';
 
 
 const App = () => {
@@ -78,6 +79,7 @@ const App = () => {
           <Route path='listing' element={<ShoppingListing />} />
           <Route path='checkout' element={<ShoppingCheckout />} />
           <Route path='account' element={<ShoppingAccount />} />
+          <Route path='search' element={<SearchProducts />} />
           <Route path='paypal-return' element={<PaypalReturnPage />} />
           <Route path='payment-success' element={<PaymentSuccess />} />
           <Route path='paypal-cancel' element={<PaymentFail />} />

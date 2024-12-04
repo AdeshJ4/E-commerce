@@ -68,7 +68,6 @@ const ShoppingListing = () => {
   
   const handleAddToCart = (getCurrentProductId, getCurrentProductTotalStock) => {
     const getCartItems = cartItems?.items || [];
-    console.log('getCartItems', getCartItems);
     
     if(getCartItems.length){
       const indexOfCurrentItem  = getCartItems.findIndex(item => item.productId === getCurrentProductId);
@@ -79,10 +78,11 @@ const ShoppingListing = () => {
           toast({
             title: `Only ${getQuantity} quantity can be added for this product`,
             variant: "destructive" 
-          })
+          });
+
+          return;
         }
       }
-      
     }
 
     dispatch(addToCart({ userId: user?.id, productId: getCurrentProductId, quantity: 1 }))
@@ -140,11 +140,7 @@ const ShoppingListing = () => {
             </span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center gap-1"
-                >
+                <Button variant="outline" size="sm" className="flex items-center gap-1" >
                   <ArrowUpDownIcon className="h-4 w-4" />
                   <span>Sort by</span>
                 </Button>
@@ -152,10 +148,7 @@ const ShoppingListing = () => {
               <DropdownMenuContent align="end" className="w-[200px]">
                 <DropdownMenuRadioGroup value={sort} onValueChange={handleSort}>
                   {sortOptions.map((sortItem) => (
-                    <DropdownMenuRadioItem
-                      value={sortItem.id}
-                      key={sortItem.id}
-                    >
+                    <DropdownMenuRadioItem  value={sortItem.id} key={sortItem.id} >
                       {sortItem.label}
                     </DropdownMenuRadioItem>
                   ))}

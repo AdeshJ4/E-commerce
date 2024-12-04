@@ -31,13 +31,25 @@ const UserCartItemsContent = ({ cartItem }) => {
       })
   }
 
-  const handleUpdateQuantity = (value) => {
+  const handleUpdateQuantity = (getCurrentProductId, typeOfAction) => {
+
+    if (typeOfAction === 'plus') {
+      if (cartItem.quantity + 1 > cartItem.totalStock) {  
+        toast({
+          title: `Only ${cartItem.quantity} quantity can be added for this product`,
+          variant: "destructive"
+        });
+
+        return;
+      }
+    }
+
     dispatch(
       updateCartItems({
         userId: user?.id,
         productId: cartItem?.productId,
         quantity:
-          value === "plus" ? cartItem?.quantity + 1 : cartItem.quantity - 1,
+          typeOfAction === "plus" ? cartItem?.quantity + 1 : cartItem.quantity - 1,
       })
     ).then((data) => {
       if (data?.payload?.success) {
@@ -65,12 +77,12 @@ const UserCartItemsContent = ({ cartItem }) => {
         </div>
 
         <div className='flex items-center mt-1 gap-2'>
-          <Button onClick={() => handleUpdateQuantity("minus")} disabled={cartItem?.quantity === 1} variant="outline" size="icon" className="h-8 w-8 rounded-full">
+          <Button onClick={() => handleUpdateQuantity(cartItem?.id, "minus")} disabled={cartItem?.quantity === 1} variant="outline" size="icon" className="h-8 w-8 rounded-full">
             <Minus className='w-4 h-4' />
             <span className='sr-only'>Decrease</span>
           </Button>
           <span className='font-semibold'>{cartItem?.quantity}</span>
-          <Button onClick={() => handleUpdateQuantity("plus")} variant="outline" size="icon" className="h-8 w-8 rounded-full">
+          <Button onClick={() => handleUpdateQuantity(cartItem?.id, "plus")} variant="outline" size="icon" className="h-8 w-8 rounded-full">
             <Plus className='w-4 h-4' />
             <span className='sr-only'>Increase</span>
           </Button>
@@ -87,14 +99,15 @@ const UserCartItemsContent = ({ cartItem }) => {
 }
 
 UserCartItemsContent.propTypes = {
-  productId: PropTypes.string,
-  image: PropTypes.string,
-  title: PropTypes.string,
-  price: PropTypes.number,
-  salePrice: PropTypes.number,
-  totalStock: PropTypes.number,
-  quantity: PropTypes.number
+  cartItem: PropTypes.shape({
+    productId: PropTypes.string,
+    image: PropTypes.string,
+    title: PropTypes.string,
+    price: PropTypes.number,
+    salePrice: PropTypes.number,
+    totalStock: PropTypes.number,
+    quantity: PropTypes.number
+  })
 };
 
-
-export default memo(UserCartItemsContent)
+export default memo(UserCartItemsContent);

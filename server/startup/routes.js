@@ -3,11 +3,13 @@ const cors = require('cors');
 const morgan = require('morgan');
 const authRouter = require('../routes/auth/auth-routes');
 const adminProductRouter = require('../routes/admin/products-routes');
+const adminOrderRouter = require('../routes/admin/orders-routes');
 const shopProductRouter = require('../routes/shop/products-routes');
 const shopCartRouter = require('../routes/shop/cart-routes');
 const shopAddressRouter = require('../routes/shop/address-routes');
 const shopOrderRouter = require('../routes/shop/order-routes');
-const adminOrderRouter = require('../routes/admin/orders-routes');
+const searchRouter = require('../routes/shop/search-route');
+const shopReviewRouter = require('../routes/shop/review-routes');
 
 
 module.exports = function (express, app) {
@@ -37,4 +39,6 @@ module.exports = function (express, app) {
     app.use("/api/shop/cart", shopCartRouter);
     app.use("/api/shop/address", shopAddressRouter);
     app.use("/api/shop/order", shopOrderRouter);
+    app.use("/api/shop/review", shopReviewRouter);
+    app.use("/api/shop/search", searchRouter);
 }
