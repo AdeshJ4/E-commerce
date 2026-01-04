@@ -16,8 +16,8 @@ export const fetchAllFilteredProducts = createAsyncThunk(
     });
 
     try {
-      // /api/shop/products/get?category=men%2Cwomen&brand=nike%2Cadidas&sortBy=price-lowtohigh
-      const response = await axios.get(
+      // /api/shop/products/get?category=men%2Cwomen&brand=nike%2Cadidas&sortBy=prie-lowtohigh
+      const response = await axios.get(c
         `http://localhost:5000/api/shop/products/get?${query}`
       );
       return response?.data;
