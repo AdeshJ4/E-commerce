@@ -2,11 +2,10 @@ import React, { memo } from 'react'
 import PropTypes from 'prop-types';
 import { SheetContent, SheetHeader, SheetTitle } from '../ui/sheet'
 import { Button } from '../ui/button'
-import UserCartItemsContent from './cart-items-content';
+import UserCartItemsContent from './UserCartItemsContent';
 import { useNavigate } from 'react-router-dom';
 
-const UserCartWrapper = ({ cartItems }) => {
-
+const UserCartWrapper = ({ cartItems, setOpenCartSheet }) => {
   const navigate = useNavigate();
 
   const totalCartAmount =
@@ -20,6 +19,11 @@ const UserCartWrapper = ({ cartItems }) => {
       )
       : 0;
 
+
+  const handleNavigation = () => {
+    navigate("/shop/checkout");
+    setOpenCartSheet(false);
+  };
 
 
   return (
@@ -41,7 +45,7 @@ const UserCartWrapper = ({ cartItems }) => {
         </div>
       </div>
 
-      <Button className="w-full mt-6" onClick={() => navigate("/shop/checkout")}>Checkout</Button>
+      <Button className="w-full mt-6" onClick={handleNavigation}>Checkout</Button>
     </SheetContent>
   );
 }
